@@ -1,34 +1,36 @@
 import { defineConfig, devices } from "@playwright/test";
-
-// Give each worktree its own port when several benchmark environments run on
-// the same machine, e.g. PLAYWRIGHT_PORT=3101 npm run test:e2e
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 3000);
-const baseURL = `http://localhost:${port}`;
-
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 3101);
+const baseURL = `http://127.0.0.1:${port}`;
 export default defineConfig({
   testDir: "./tests/e2e",
-  fullyParallel: true,
-  forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  fullyParallel: false,
+  workers: 1,
+  forbidOnly: !!process.env.CI,
+  retries: 0,
+  timeout: 45000,
+  expect: { timeout: 10000 },
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL,
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     screenshot: "only-on-failure",
+    launchOptions: {
+      args:
+        process.platform === "win32"
+          ? ["--enable-gpu", "--use-angle=d3d11"]
+          : ["--enable-unsafe-swiftshader"],
+    },
   },
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
     },
   ],
   webServer: {
-    command: `npm run dev -- --port ${port}`,
+    command: "node scripts/e2e-server.mjs",
     url: baseURL,
-    // Never attach to a server that is already running: on a shared machine it
-    // could belong to another benchmark worktree.
     reuseExistingServer: false,
-    timeout: 120_000,
+    timeout: 120000,
   },
 });

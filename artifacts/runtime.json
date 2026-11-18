@@ -1,0 +1,20 @@
+{
+  "browser": "159.0.8154.6",
+  "runtime": {
+    "fpsMedian": 59.88023952095874,
+    "fpsP05": 59.523809523812105,
+    "frameTimeP95Ms": 16.799999999999272,
+    "medianDrawCalls": 106,
+    "medianTriangles": 65802,
+    "frames": 300,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "quality": "HIGH",
+    "dpr": 1.5,
+    "jsResources": 9,
+    "jsDecodedBytes": 1580909,
+    "jsEncodedBytes": 439369
+  },
+  "failedNetworkRequests": [],
+  "uncaughtBrowserErrors": [],
+  "httpErrors": []
+}

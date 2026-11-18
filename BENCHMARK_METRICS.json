@@ -1,0 +1,81 @@
+{
+  "application": "AEGIS — Drone Test Facility",
+  "branch": "benchmark/astra",
+  "baselineCommit": "8b14fb800825eb25bc77785184aecaf8022c5f82",
+  "environment": {
+    "node": "26.8.1",
+    "npm": "11.19.0",
+    "os": "Windows NT 10.0.26200.0",
+    "chromium": "159.0.8154.6",
+    "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "installSuccess": true,
+  "databaseSetupSuccess": true,
+  "buildSuccess": true,
+  "typecheckSuccess": true,
+  "lintSuccess": true,
+  "unitTests": {
+    "passed": 32,
+    "failed": 0,
+    "skipped": 0,
+    "starterInfrastructureChecks": 2
+  },
+  "browserTests": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "server": "Next.js production, isolated SQLite database"
+  },
+  "performance": {
+    "fpsMedian": 59.88023952095874,
+    "fpsP05": 59.523809523812105,
+    "frameTimeP95Ms": 16.799999999999272,
+    "medianDrawCalls": 106,
+    "medianTriangles": 65802,
+    "frames": 300,
+    "quality": "HIGH",
+    "dpr": 1.5,
+    "viewportCssPixels": [1440, 900],
+    "scene": "animated hangar, hero camera",
+    "method": "300 consecutive requestAnimationFrame intervals after first nonempty renderer sample and 2.5 s warmup; renderer counters include shadow and postprocessing passes."
+  },
+  "javascript": {
+    "loadedResources": 9,
+    "decodedBytes": 1580909,
+    "encodedBytes": 439369,
+    "allProductionStaticJsChunks": 10,
+    "allProductionStaticJsBytes": 1693503
+  },
+  "capture": {
+    "screenshots": 5,
+    "desktop": [1440, 900],
+    "mobile": [390, 844],
+    "failedNetworkRequests": 0,
+    "uncaughtBrowserErrors": 0,
+    "httpErrors": 0,
+    "rawEvidence": "artifacts/runtime.json"
+  },
+  "dependencyAudit": {
+    "fullTreeHigh": 16,
+    "productionAdvisories": 0
+  },
+  "usage": {
+    "goalCounterSnapshot": {
+      "tokens": 192211,
+      "seconds": 2251,
+      "observedAt": "2026-11-18T11:18:14.000Z"
+    },
+    "source": "Codex get_goal during final reporting. Scope begins at goal creation and ends at observation. This is a harness counter.",
+    "billedTokens": null,
+    "billedCostUsd": null,
+    "unavailableReason": "No provider billing statement or provider input/output/cache token breakdown was exposed."
+  },
+  "knownIncompleteRequirements": [],
+  "verificationLimits": [
+    "Touch and mobile layout were tested with Chromium emulation on Windows; physical mobile hardware and other browser engines were not tested.",
+    "Performance measurements apply to the specified GPU and animated hero view.",
+    "Mission summaries persist locally. Recorded telemetry samples are held in memory for the current flight.",
+    "Client-reported results receive plausibility checks; server-authoritative flight replay is outside this local benchmark."
+  ]
+}

@@ -1,8 +1,20 @@
-export default function Home() {
+import FacilityApp from "@/components/ui/FacilityApp";
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const q = await searchParams;
+  const numericSeed = Number(q.seed ?? 42);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-3 p-8 text-center">
-      <h1 className="text-3xl font-semibold">AEGIS — Benchmark Starter</h1>
-      <p className="text-neutral-600">Ready for AI agent evaluation.</p>
-    </main>
+    <FacilityApp
+      options={{
+        scene: q.scene === "flight" || q.scene === "telemetry" ? q.scene : "hangar",
+        camera: q.camera === "top" || q.camera === "side" ? q.camera : "hero",
+        benchmark: q.benchmark === "1",
+        perf: q.perf === "1",
+        seed: Number.isFinite(numericSeed) ? numericSeed >>> 0 : 42,
+      }}
+    />
   );
 }

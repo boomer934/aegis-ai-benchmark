@@ -19,11 +19,17 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e",
+    "test:all": "npm run typecheck && npm run lint && npm run test && npm run build && npm run test:e2e",
+    "capture": "node scripts/capture.mjs",
+    "db:setup": "prisma generate && prisma migrate deploy",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "@fontsource/barlow": "5.3.0",
+    "@fontsource/barlow-condensed": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@prisma/adapter-libsql": "7.10.1",
     "@prisma/client": "7.10.1",
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
