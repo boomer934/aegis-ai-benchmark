@@ -1,0 +1,95 @@
+{
+  "agent": {
+    "harness": "Claude Code (desktop app)",
+    "model": "claude-opus-5-5",
+    "branch": "benchmark/opus",
+    "baselineCommit": "8b14fb800825eb25bc77785184aecaf8022c5f82"
+  },
+  "environment": {
+    "os": "Windows 11 Pro 10.0.26200",
+    "gpu": "NVIDIA GeForce RTX 5060 (ANGLE Direct3D11)",
+    "node": "26.8.1",
+    "npm": "11.19.0",
+    "browser": "Playwright Chromium (headless, --use-angle=d3d11 --enable-gpu)"
+  },
+  "build": {
+    "success": true,
+    "command": "npm run build",
+    "typecheck": { "success": true, "errors": 0 },
+    "lint": { "success": true, "errors": 0, "warnings": 0 }
+  },
+  "unitTests": {
+    "command": "npm run test",
+    "files": 5,
+    "passed": 46,
+    "failed": 0
+  },
+  "browserTests": {
+    "command": "PLAYWRIGHT_PORT=3113 npx playwright test",
+    "passed": 17,
+    "failed": 0,
+    "projects": { "desktop": 15, "mobile": 2 },
+    "linuxCiExecuted": false
+  },
+  "performance": {
+    "methodology": "Production build, ?perf=1 (quality HIGH, devicePixelRatio fixed 1.5, no adaptive degradation), viewport 1440x900, 3 s warm-up, then 600 consecutive requestAnimationFrame intervals (~10 s). Flight measured while flying. Draw calls/triangles from WebGLRenderer.info (include shadow passes). Source: artifacts/perf/perf-results.json",
+    "quality": "HIGH",
+    "devicePixelRatio": 1.5,
+    "vsyncCapped": true,
+    "scenes": {
+      "hangar": {
+        "fpsMedian": 59.17,
+        "fpsP5": 55.56,
+        "frameTimeMsP50": 16.9,
+        "frameTimeMsP95": 18.0,
+        "frameTimeMsP99": 18.1,
+        "drawCalls": 174,
+        "triangles": 62360,
+        "samples": 600
+      },
+      "flight": {
+        "fpsMedian": 59.17,
+        "fpsP5": 55.56,
+        "frameTimeMsP50": 16.9,
+        "frameTimeMsP95": 18.0,
+        "frameTimeMsP99": 18.1,
+        "drawCalls": 187,
+        "triangles": 67850,
+        "samples": 600
+      }
+    },
+    "notes": "Values are capped by the 60 Hz display (vsync). An uncapped run is in perf-results.json but is only an upper bound of loop throughput (frames may not be presented; timer resolution ~0.1 ms). Single high-end desktop GPU; no mobile/integrated GPU measured."
+  },
+  "bundle": {
+    "jsChunkFiles": 18,
+    "totalJsBytes": 1811016,
+    "totalJsGzipBytes": 525758,
+    "largestChunkBytes": 934307,
+    "largestChunkGzipBytes": 246561,
+    "largestChunkContents": "three + @react-three/fiber + @react-three/drei, loaded lazily via next/dynamic",
+    "source": ".next/static/chunks after npm run build"
+  },
+  "runtimeErrors": {
+    "failedNetworkRequests": 0,
+    "uncaughtBrowserErrors": 0,
+    "source": "measure-perf.mjs (requestfailed + HTTP >= 400 + pageerror listeners on hangar and flight), capture-screenshots.mjs (pageerror on 5 views), and every Playwright page test asserting zero page/console errors (deliberate 4xx API calls excluded)"
+  },
+  "screenshots": [
+    "artifacts/screenshots/01-hangar-hero-desktop.png",
+    "artifacts/screenshots/02-hangar-top-desktop.png",
+    "artifacts/screenshots/03-flight-desktop.png",
+    "artifacts/screenshots/04-telemetry-desktop.png",
+    "artifacts/screenshots/05-hangar-mobile.png"
+  ],
+  "knownIncompleteRequirements": [
+    "No automated in-browser test flies the full five-gate course (full completion is proven in unit tests with an input-driven autopilot; the browser test covers gate 1 + collision penalty)",
+    "Playwright suite not executed on Linux/CI in this run",
+    "Performance measured only on one desktop GPU at the 60 Hz vsync cap",
+    "Server cannot verify that a client-reported result was actually flown (documented limitation)"
+  ],
+  "usage": {
+    "tokens": null,
+    "costUsd": null,
+    "note": "Billing/token data not exposed by the environment. Plan usage reported by the app at report time: ~43% of the 5-hour window, ~37% weekly (Pro plan); session context ~452k tokens. Not a billed-token or cost figure."
+  }
+}

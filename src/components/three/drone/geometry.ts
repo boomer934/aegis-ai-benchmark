@@ -44,7 +44,12 @@ function hullShape(scale = 1): THREE.Shape {
 }
 
 /** Extrude a top-view shape vertically, centred on y = 0. */
-function verticalExtrude(shape: THREE.Shape, depth: number, bevel: number, segments = 3): THREE.BufferGeometry {
+function verticalExtrude(
+  shape: THREE.Shape,
+  depth: number,
+  bevel: number,
+  segments = 3,
+): THREE.BufferGeometry {
   const g = new THREE.ExtrudeGeometry(shape, {
     depth,
     bevelEnabled: bevel > 0,
@@ -138,7 +143,8 @@ function propellerGeometry(direction: 1 | -1): THREE.BufferGeometry {
 /** mergeGeometries requires matching attribute sets; drop uv where not needed. */
 function stripUv(g: THREE.BufferGeometry): THREE.BufferGeometry {
   if (g.index) g = g.toNonIndexed();
-  for (const name of Object.keys(g.attributes)) if (name !== "position" && name !== "normal") g.deleteAttribute(name);
+  for (const name of Object.keys(g.attributes))
+    if (name !== "position" && name !== "normal") g.deleteAttribute(name);
   return g;
 }
 
@@ -207,11 +213,21 @@ function landingStrutsGeometry(): THREE.BufferGeometry {
   for (const side of [-1, 1]) {
     for (const z of [-0.13, 0.13]) {
       parts.push(
-        strutBetween(new THREE.Vector3(side * 0.1, -0.06, z * 0.9), new THREE.Vector3(side * 0.17, -0.265, z * 1.1), 0.009),
+        strutBetween(
+          new THREE.Vector3(side * 0.1, -0.06, z * 0.9),
+          new THREE.Vector3(side * 0.17, -0.265, z * 1.1),
+          0.009,
+        ),
       );
     }
     // Cross brace.
-    parts.push(strutBetween(new THREE.Vector3(side * 0.16, -0.22, -0.14), new THREE.Vector3(side * 0.16, -0.22, 0.14), 0.006));
+    parts.push(
+      strutBetween(
+        new THREE.Vector3(side * 0.16, -0.22, -0.14),
+        new THREE.Vector3(side * 0.16, -0.22, 0.14),
+        0.006,
+      ),
+    );
   }
   const merged = mergeGeometries(parts.map(stripUv));
   parts.forEach((p) => p.dispose());
@@ -333,7 +349,10 @@ export function getDroneGeometries(): DroneGeometries {
   const eye = new THREE.CylinderGeometry(0.011, 0.011, 0.012, 16);
   eye.rotateX(Math.PI / 2);
 
-  const rootToRotor = Math.hypot(ROTOR_POSITIONS[0][0] - ARM_ROOTS[0][0], ROTOR_POSITIONS[0][2] - ARM_ROOTS[0][2]);
+  const rootToRotor = Math.hypot(
+    ROTOR_POSITIONS[0][0] - ARM_ROOTS[0][0],
+    ROTOR_POSITIONS[0][2] - ARM_ROOTS[0][2],
+  );
   const armLength = rootToRotor - 0.05;
   const arm = armGeometry(armLength);
   const armHub = new THREE.CylinderGeometry(0.04, 0.044, 0.085, 20);

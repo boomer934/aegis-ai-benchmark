@@ -6,12 +6,14 @@ import type { EngineId } from "@/sim/profiles";
 import { useSaveState } from "@/stores/flightStore";
 import { demoMissions } from "./demoData";
 
-export type Loadable<T> = { state: "loading" } | { state: "error"; message: string } | { state: "ready"; data: T };
+export type Loadable<T> =
+  { state: "loading" } | { state: "error"; message: string } | { state: "ready"; data: T };
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url, { cache: "no-store" });
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error((body as ApiError | null)?.error ?? `Request failed (${res.status})`);
+  if (!res.ok)
+    throw new Error((body as ApiError | null)?.error ?? `Request failed (${res.status})`);
   return body as T;
 }
 
@@ -27,7 +29,14 @@ function useFetch<T>(url: string | null, refreshKey: string): Loadable<T> {
     let cancelled = false;
     getJson<T>(url)
       .then((data) => !cancelled && setRes({ key, value: { state: "ready", data } }))
-      .catch((e: unknown) => !cancelled && setRes({ key, value: { state: "error", message: e instanceof Error ? e.message : "Network error" } }));
+      .catch(
+        (e: unknown) =>
+          !cancelled &&
+          setRes({
+            key,
+            value: { state: "error", message: e instanceof Error ? e.message : "Network error" },
+          }),
+      );
     return () => {
       cancelled = true;
     };
@@ -48,7 +57,10 @@ export function useHistory(filter: OutcomeFilter, demo: boolean, seed: number) {
   const [nonce, setNonce] = useState(0);
   const saved = useSavedKey();
   const q = filter === "all" ? "" : `&outcome=${filter}`;
-  const remote = useFetch<{ missions: MissionSummary[]; total: number }>(demo ? null : `/api/missions?limit=25${q}`, `${nonce}-${saved}`);
+  const remote = useFetch<{ missions: MissionSummary[]; total: number }>(
+    demo ? null : `/api/missions?limit=25${q}`,
+    `${nonce}-${saved}`,
+  );
   const local = useMemo<Loadable<{ missions: MissionSummary[]; total: number }> | null>(() => {
     if (!demo) return null;
     const missions = demoMissions(seed).filter((m) => filter === "all" || m.outcome === filter);
@@ -61,7 +73,10 @@ export function useLeaderboard(engine: EngineId | "ALL", demo: boolean, seed: nu
   const [nonce, setNonce] = useState(0);
   const saved = useSavedKey();
   const q = engine === "ALL" ? "" : `&engine=${engine}`;
-  const remote = useFetch<{ entries: MissionSummary[] }>(demo ? null : `/api/leaderboard?limit=10${q}`, `${nonce}-${saved}`);
+  const remote = useFetch<{ entries: MissionSummary[] }>(
+    demo ? null : `/api/leaderboard?limit=10${q}`,
+    `${nonce}-${saved}`,
+  );
   const local = useMemo<Loadable<MissionSummary[]> | null>(() => {
     if (!demo) return null;
     const rows = demoMissions(seed)
@@ -74,8 +89,15 @@ export function useLeaderboard(engine: EngineId | "ALL", demo: boolean, seed: nu
   return { data, reload: useCallback(() => setNonce((n) => n + 1), []) };
 }
 
-export function useMissionDetail(id: string | null, demo: boolean, seed: number): Loadable<MissionDetail> | null {
-  const remote = useFetch<{ mission: MissionDetail }>(!demo && id ? `/api/missions/${encodeURIComponent(id)}` : null, "");
+export function useMissionDetail(
+  id: string | null,
+  demo: boolean,
+  seed: number,
+): Loadable<MissionDetail> | null {
+  const remote = useFetch<{ mission: MissionDetail }>(
+    !demo && id ? `/api/missions/${encodeURIComponent(id)}` : null,
+    "",
+  );
   return useMemo(() => {
     if (!id) return null;
     if (demo) {

@@ -30,7 +30,15 @@ interface Props {
   portrait: boolean;
 }
 
-export function FlightScene({ controller, paint, lights, quality, seed, reducedMotion, portrait }: Props) {
+export function FlightScene({
+  controller,
+  paint,
+  lights,
+  quality,
+  seed,
+  reducedMotion,
+  portrait,
+}: Props) {
   const q = QUALITY_PROFILES[quality];
   const droneRef = useRef<THREE.Group>(null);
   const sun = useRef<THREE.DirectionalLight>(null);
@@ -44,7 +52,10 @@ export function FlightScene({ controller, paint, lights, quality, seed, reducedM
   // Re-render when a staged benchmark view is released so animations resume.
   const staged = useFlight((s) => s.staged);
   const scene = useThree((s) => s.scene);
-  const tmp = useMemo(() => ({ p: new THREE.Vector3(), target: new THREE.Vector3(), look: new THREE.Vector3() }), []);
+  const tmp = useMemo(
+    () => ({ p: new THREE.Vector3(), target: new THREE.Vector3(), look: new THREE.Vector3() }),
+    [],
+  );
 
   useEffect(() => {
     scene.fog = new THREE.Fog("#070b10", 40, 190);
@@ -136,12 +147,39 @@ export function FlightScene({ controller, paint, lights, quality, seed, reducedM
         shadow-bias={-0.0004}
         shadow-normalBias={0.03}
       />
-      <pointLight position={[ARENA.start.x, 4, ARENA.start.z]} color="#4fe3fb" intensity={40} distance={20} decay={2} />
+      <pointLight
+        position={[ARENA.start.x, 4, ARENA.start.z]}
+        color="#4fe3fb"
+        intensity={40}
+        distance={20}
+        decay={2}
+      />
       <Environment resolution={q.envResolution} frames={1} background={false}>
         <color attach="background" args={["#06090d"]} />
-        <Lightformer form="rect" intensity={2.5} color="#e9f6ff" position={[0, 10, 0]} rotation-x={Math.PI / 2} scale={[20, 6, 1]} />
-        <Lightformer form="rect" intensity={1.2} color="#4fe3fb" position={[-10, 3, 0]} rotation-y={Math.PI / 2} scale={[10, 1, 1]} />
-        <Lightformer form="rect" intensity={1} color="#ff9f1c" position={[10, 2, 0]} rotation-y={-Math.PI / 2} scale={[10, 1, 1]} />
+        <Lightformer
+          form="rect"
+          intensity={2.5}
+          color="#e9f6ff"
+          position={[0, 10, 0]}
+          rotation-x={Math.PI / 2}
+          scale={[20, 6, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.2}
+          color="#4fe3fb"
+          position={[-10, 3, 0]}
+          rotation-y={Math.PI / 2}
+          scale={[10, 1, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1}
+          color="#ff9f1c"
+          position={[10, 2, 0]}
+          rotation-y={-Math.PI / 2}
+          scale={[10, 1, 1]}
+        />
       </Environment>
 
       <Arena nextGate={nextGate} frozen={staged} seed={seed} />
@@ -150,7 +188,10 @@ export function FlightScene({ controller, paint, lights, quality, seed, reducedM
         count={Math.round(q.particles * 1.2)}
         seed={seed}
         frozen={staged}
-        box={{ min: [ARENA.bounds.minX, 0.5, ARENA.bounds.minZ], max: [ARENA.bounds.maxX, 24, ARENA.bounds.maxZ] }}
+        box={{
+          min: [ARENA.bounds.minX, 0.5, ARENA.bounds.minZ],
+          max: [ARENA.bounds.maxX, 24, ARENA.bounds.maxZ],
+        }}
         size={0.12}
         color="#7fd8f0"
       />

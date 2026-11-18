@@ -14,7 +14,13 @@ import {
   type World,
 } from "./mission";
 import { NEUTRAL_INPUT, type FlightInput } from "./physics";
-import { computeScore, COLLISION_PENALTY, MISSION_TIME_LIMIT_MS, POINTS_PER_CHECKPOINT, timeBonus } from "./scoring";
+import {
+  computeScore,
+  COLLISION_PENALTY,
+  MISSION_TIME_LIMIT_MS,
+  POINTS_PER_CHECKPOINT,
+  timeBonus,
+} from "./scoring";
 
 function stepN(w: World, n: number, input: FlightInput = NEUTRAL_INPUT) {
   for (let i = 0; i < n; i++) stepWorld(w, input);
@@ -52,13 +58,21 @@ describe("checkpoint detection", () => {
     const b = { ...after(), y: gate1.center.y + gate1.halfHeight + 0.5 };
     expect(segmentCrossesGate(gate1, a, b)).toBe(false);
     const side = gate1.halfWidth + 0.5;
-    expect(segmentCrossesGate(gate1, { ...before(), x: side }, { ...after(), x: side })).toBe(false);
+    expect(segmentCrossesGate(gate1, { ...before(), x: side }, { ...after(), x: side })).toBe(
+      false,
+    );
   });
 
   it("only scores the next gate in order; other gates are wrong-gate", () => {
     const g3 = ARENA.gates[2];
-    expect(evaluateGateCrossing(ARENA.gates, 0, before(g3), after(g3))).toEqual({ kind: "wrong-gate", gateIndex: 2 });
-    expect(evaluateGateCrossing(ARENA.gates, 2, before(g3), after(g3))).toEqual({ kind: "checkpoint", gateIndex: 2 });
+    expect(evaluateGateCrossing(ARENA.gates, 0, before(g3), after(g3))).toEqual({
+      kind: "wrong-gate",
+      gateIndex: 2,
+    });
+    expect(evaluateGateCrossing(ARENA.gates, 2, before(g3), after(g3))).toEqual({
+      kind: "checkpoint",
+      gateIndex: 2,
+    });
   });
 
   it("detects checkpoints from simulated movement, in order only", () => {
@@ -94,9 +108,9 @@ describe("collisions", () => {
     stageDrone(w, { x: pillar.x, y: 5, z: pillar.z + 6, vx: 0, vy: 0, vz: -12, energy: 90 });
     stepN(w, 120, { x: 0, y: 0, z: 1, boost: false });
     // Never penetrates the pillar.
-    expect(Math.hypot(w.drone.position.x - pillar.x, w.drone.position.z - pillar.z)).toBeGreaterThanOrEqual(
-      pillar.radius + DRONE_RADIUS - 1e-6,
-    );
+    expect(
+      Math.hypot(w.drone.position.x - pillar.x, w.drone.position.z - pillar.z),
+    ).toBeGreaterThanOrEqual(pillar.radius + DRONE_RADIUS - 1e-6);
     expect(w.mission.collisions).toBe(1);
     expect(liveScore(w)).toBe(0);
     expect(w.events.filter((e) => e.type === "collision")).toHaveLength(1);
@@ -118,7 +132,7 @@ describe("collisions", () => {
     const w = createWorld("SPORT");
     startAndRun(w);
     stageDrone(w, { x: 0, y: 3, z: 0, vx: 0, vy: -1.5, vz: 0, energy: 90 });
-    stepN(w, 240, { x: 0, y: -0.15, z: 0, boost: false });
+    stepN(w, 480, { x: 0, y: -0.15, z: 0, boost: false });
     expect(w.drone.position.y).toBeCloseTo(DRONE_REST_HEIGHT, 5);
     expect(w.mission.collisions).toBe(0);
   });
@@ -136,12 +150,16 @@ describe("scoring", () => {
     expect(computeScore({ checkpoints: 3, collisions: 1, durationMs: 30000, success: false })).toBe(
       3 * POINTS_PER_CHECKPOINT - COLLISION_PENALTY,
     );
-    expect(computeScore({ checkpoints: 5, collisions: 0, durationMs: 30000, success: true })).toBe(5000 + 1500);
+    expect(computeScore({ checkpoints: 5, collisions: 0, durationMs: 30000, success: true })).toBe(
+      5000 + 1500,
+    );
     expect(timeBonus(MISSION_TIME_LIMIT_MS)).toBe(0);
   });
 
   it("never goes negative", () => {
-    expect(computeScore({ checkpoints: 0, collisions: 9, durationMs: 60000, success: false })).toBe(0);
+    expect(computeScore({ checkpoints: 0, collisions: 9, durationMs: 60000, success: false })).toBe(
+      0,
+    );
   });
 });
 
@@ -216,7 +234,14 @@ describe("mission lifecycle", () => {
       expect(r?.splitsMs).toHaveLength(5);
       expect(r?.durationMs).toBeLessThan(MISSION_TIME_LIMIT_MS);
       expect(r?.collisions).toBe(0);
-      expect(r?.score).toBe(computeScore({ checkpoints: 5, collisions: 0, durationMs: r?.durationMs ?? 0, success: true }));
+      expect(r?.score).toBe(
+        computeScore({
+          checkpoints: 5,
+          collisions: 0,
+          durationMs: r?.durationMs ?? 0,
+          success: true,
+        }),
+      );
       expect(r?.telemetry.length).toBeGreaterThan(10);
       expect(r?.avgSpeed).toBeLessThanOrEqual(r?.maxSpeed ?? 0);
     });

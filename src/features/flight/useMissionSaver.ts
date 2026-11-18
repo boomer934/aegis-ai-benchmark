@@ -19,7 +19,9 @@ export async function postMission(body: MissionSubmission): Promise<MissionDetai
   if (!res.ok) {
     const err = json as ApiError | null;
     const detail = err?.issues?.map((i) => i.message).join("; ");
-    throw new Error(detail ? `${err?.error}: ${detail}` : (err?.error ?? `Request failed (${res.status})`));
+    throw new Error(
+      detail ? `${err?.error}: ${detail}` : (err?.error ?? `Request failed (${res.status})`),
+    );
   }
   return (json as { mission: MissionDetail }).mission;
 }
@@ -53,7 +55,9 @@ export function useMissionSaver(enabled: boolean): { retry: () => void } {
       });
       saveStore.set({ save: { kind: "saved", id: mission.id } });
     } catch (e) {
-      saveStore.set({ save: { kind: "error", message: e instanceof Error ? e.message : "Network error" } });
+      saveStore.set({
+        save: { kind: "error", message: e instanceof Error ? e.message : "Network error" },
+      });
     }
   }, []);
 

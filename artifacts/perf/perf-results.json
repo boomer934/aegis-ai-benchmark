@@ -1,0 +1,88 @@
+{
+  "measuredAt": "2026-11-18T10:26:38.746Z",
+  "baseURL": "http://localhost:3103",
+  "sampleWindowMs": 10000,
+  "viewport": "1440x900",
+  "runs": {
+    "vsync": {
+      "hangar": {
+        "samples": 600,
+        "fpsMedian": 59.171597716613064,
+        "fpsP5": 55.55555555555556,
+        "frameMsMedian": 16.899999976158142,
+        "frameMsP95": 18,
+        "frameMsP99": 18.100000023841858,
+        "drawCalls": 174,
+        "triangles": 62360,
+        "geometries": 91,
+        "textures": 17,
+        "programs": 26,
+        "dpr": 1.5,
+        "quality": "HIGH",
+        "scene": "hangar",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "pageErrors": [],
+        "failedRequests": []
+      },
+      "flight": {
+        "samples": 600,
+        "fpsMedian": 59.17159750792064,
+        "fpsP5": 55.55555555555556,
+        "frameMsMedian": 16.900000035762787,
+        "frameMsP95": 18,
+        "frameMsP99": 18.100000023841858,
+        "drawCalls": 187,
+        "triangles": 67850,
+        "geometries": 188,
+        "textures": 16,
+        "programs": 22,
+        "dpr": 1.5,
+        "quality": "HIGH",
+        "scene": "flight",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "pageErrors": [],
+        "failedRequests": []
+      }
+    },
+    "uncapped": {
+      "hangar": {
+        "samples": 600,
+        "fpsMedian": 1249.9999813735487,
+        "fpsP5": 909.0908893868947,
+        "frameMsMedian": 0.800000011920929,
+        "frameMsP95": 1.100000023841858,
+        "frameMsP99": 9.5,
+        "drawCalls": 174,
+        "triangles": 62360,
+        "geometries": 91,
+        "textures": 17,
+        "programs": 26,
+        "dpr": 1.5,
+        "quality": "HIGH",
+        "scene": "hangar",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "pageErrors": [],
+        "failedRequests": []
+      },
+      "flight": {
+        "samples": 600,
+        "fpsMedian": 1428.5714528998553,
+        "fpsP5": 1000,
+        "frameMsMedian": 0.699999988079071,
+        "frameMsP95": 1,
+        "frameMsP99": 1.199999988079071,
+        "drawCalls": 187,
+        "triangles": 67850,
+        "geometries": 188,
+        "textures": 16,
+        "programs": 22,
+        "dpr": 1.5,
+        "quality": "HIGH",
+        "scene": "flight",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "pageErrors": [],
+        "failedRequests": []
+      }
+    }
+  }
+}

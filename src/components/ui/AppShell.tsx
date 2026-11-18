@@ -20,8 +20,19 @@ function Logo() {
   return (
     <div className="flex items-center gap-3">
       <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true" className="shrink-0">
-        <path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="none" stroke="#4fe3fb" strokeWidth="1.4" />
-        <path d="M16 8 23 12v8l-7 4-7-4v-8Z" fill="#4fe3fb" fillOpacity="0.14" stroke="#4fe3fb" strokeWidth="1" />
+        <path
+          d="M16 2 29 9.5v13L16 30 3 22.5v-13Z"
+          fill="none"
+          stroke="#4fe3fb"
+          strokeWidth="1.4"
+        />
+        <path
+          d="M16 8 23 12v8l-7 4-7-4v-8Z"
+          fill="#4fe3fb"
+          fillOpacity="0.14"
+          stroke="#4fe3fb"
+          strokeWidth="1"
+        />
         <circle cx="16" cy="16" r="2.4" fill="#ff9f1c" />
       </svg>
       <div className="leading-none">
@@ -37,7 +48,12 @@ function Logo() {
 function QualitySelector({ locked }: { locked: boolean }) {
   const quality = useConfig((s) => s.quality);
   return (
-    <div role="radiogroup" aria-label="Graphics quality" className="flex items-center gap-1" data-testid="quality-selector">
+    <div
+      role="radiogroup"
+      aria-label="Graphics quality"
+      className="flex items-center gap-1"
+      data-testid="quality-selector"
+    >
       <span className="label mr-1 hidden lg:inline">GFX</span>
       {QUALITY_IDS.map((q: QualityId) => (
         <button
@@ -46,7 +62,9 @@ function QualitySelector({ locked }: { locked: boolean }) {
           role="radio"
           aria-checked={quality === q}
           disabled={locked}
-          title={locked ? "Quality is fixed to HIGH in benchmark/perf mode" : `${q} graphics quality`}
+          title={
+            locked ? "Quality is fixed to HIGH in benchmark/perf mode" : `${q} graphics quality`
+          }
           onClick={() => configStore.set({ quality: q })}
           className="seg-btn border border-graphite-600 px-2 py-1 text-[10px] text-steel-300 hover:border-ion-500 hover:text-steel-100 disabled:cursor-not-allowed disabled:opacity-70"
         >
@@ -70,7 +88,10 @@ function FlightStatusChip() {
           ? "text-signal-red border-signal-red/50"
           : "text-amber-400 border-amber-500/50";
   return (
-    <span className={`label hidden border px-2 py-1 !text-[9px] md:inline ${tone}`} data-testid="shell-flight-status">
+    <span
+      className={`label hidden border px-2 py-1 !text-[9px] md:inline ${tone}`}
+      data-testid="shell-flight-status"
+    >
       SIM {status}
     </span>
   );
@@ -121,14 +142,18 @@ export function AppShell({
                     isActive ? "text-steel-100" : "text-steel-400 hover:text-steel-200"
                   }`}
                 >
-                  <span className={`font-mono text-[10px] ${isActive ? "text-amber-500" : "text-graphite-600 group-hover:text-steel-400"}`}>
+                  <span
+                    className={`font-mono text-[10px] ${isActive ? "text-amber-500" : "text-graphite-600 group-hover:text-steel-400"}`}
+                  >
                     {m.index}
                   </span>
                   {m.label}
                   <span
                     aria-hidden="true"
                     className={`absolute inset-x-3 bottom-0 h-[2px] transition-all ${
-                      isActive ? "bg-ion-400 shadow-[0_0_12px_rgba(79,227,251,0.8)]" : "bg-transparent"
+                      isActive
+                        ? "bg-ion-400 shadow-[0_0_12px_rgba(79,227,251,0.8)]"
+                        : "bg-transparent"
                     }`}
                   />
                 </Link>
@@ -174,9 +199,18 @@ export function AppShell({
                   isActive ? "text-ion-300" : "text-steel-400"
                 }`}
               >
-                <span className={`font-mono text-[9px] ${isActive ? "text-amber-500" : "text-graphite-600"}`}>{m.index}</span>
+                <span
+                  className={`font-mono text-[9px] ${isActive ? "text-amber-500" : "text-graphite-600"}`}
+                >
+                  {m.index}
+                </span>
                 {m.short}
-                {isActive && <span aria-hidden="true" className="absolute inset-x-6 top-0 h-[2px] bg-ion-400" />}
+                {isActive && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-6 top-0 h-[2px] bg-ion-400"
+                  />
+                )}
               </Link>
             );
           })}

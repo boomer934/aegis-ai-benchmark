@@ -77,14 +77,30 @@ describe("mission submission validation", () => {
   });
 
   it("flags impossible durations, speeds and outcome inconsistencies", () => {
-    const tooFast = { ...valid, durationMs: 1000, splitsMs: [200, 400, 600, 800, 1000], telemetry: [] };
-    tooFast.score = computeScore({ checkpoints: 5, collisions: valid.collisions, durationMs: 1000, success: true });
-    expect(checkMissionPlausibility(missionSubmissionSchema.parse(tooFast)).join(" ")).toMatch(/faster than/);
+    const tooFast = {
+      ...valid,
+      durationMs: 1000,
+      splitsMs: [200, 400, 600, 800, 1000],
+      telemetry: [],
+    };
+    tooFast.score = computeScore({
+      checkpoints: 5,
+      collisions: valid.collisions,
+      durationMs: 1000,
+      success: true,
+    });
+    expect(checkMissionPlausibility(missionSubmissionSchema.parse(tooFast)).join(" ")).toMatch(
+      /faster than/,
+    );
 
     const speeding = missionSubmissionSchema.parse({ ...valid, maxSpeed: 80 });
     expect(checkMissionPlausibility(speeding).join(" ")).toMatch(/Max speed/);
 
-    const fakeSuccess = missionSubmissionSchema.parse({ ...valid, checkpoints: 4, splitsMs: valid.splitsMs.slice(0, 4) });
+    const fakeSuccess = missionSubmissionSchema.parse({
+      ...valid,
+      checkpoints: 4,
+      splitsMs: valid.splitsMs.slice(0, 4),
+    });
     expect(checkMissionPlausibility(fakeSuccess).join(" ")).toMatch(/all 5 checkpoints/);
 
     const earlyFail = missionSubmissionSchema.parse({
@@ -98,9 +114,15 @@ describe("mission submission validation", () => {
   });
 
   it("flags non-monotonic splits and telemetry", () => {
-    const badSplits = missionSubmissionSchema.parse({ ...valid, splitsMs: [...valid.splitsMs].reverse() });
+    const badSplits = missionSubmissionSchema.parse({
+      ...valid,
+      splitsMs: [...valid.splitsMs].reverse(),
+    });
     expect(checkMissionPlausibility(badSplits).join(" ")).toMatch(/strictly increasing/);
-    const badTrace = missionSubmissionSchema.parse({ ...valid, telemetry: [...valid.telemetry].reverse() });
+    const badTrace = missionSubmissionSchema.parse({
+      ...valid,
+      telemetry: [...valid.telemetry].reverse(),
+    });
     expect(checkMissionPlausibility(badTrace).join(" ")).toMatch(/ascending/);
   });
 

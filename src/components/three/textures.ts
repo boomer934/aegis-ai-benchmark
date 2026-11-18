@@ -37,14 +37,24 @@ function make(
   return tex;
 }
 
-function grime(ctx: CanvasRenderingContext2D, rng: Rng, w: number, h: number, count: number, alpha: number) {
+function grime(
+  ctx: CanvasRenderingContext2D,
+  rng: Rng,
+  w: number,
+  h: number,
+  count: number,
+  alpha: number,
+) {
   for (let i = 0; i < count; i++) {
     const x = rng() * w;
     const y = rng() * h;
     const r = 8 + rng() * 60;
     const g = ctx.createRadialGradient(x, y, 0, x, y, r);
     const dark = rng() > 0.35;
-    g.addColorStop(0, dark ? `rgba(0,0,0,${alpha * rng()})` : `rgba(160,180,190,${alpha * 0.35 * rng()})`);
+    g.addColorStop(
+      0,
+      dark ? `rgba(0,0,0,${alpha * rng()})` : `rgba(160,180,190,${alpha * 0.35 * rng()})`,
+    );
     g.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g;
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
@@ -244,7 +254,9 @@ export function carbonTexture(): THREE.Texture {
       for (let y = 0; y < h; y += s) {
         for (let x = 0; x < w; x += s) {
           const horizontal = (x / s + y / s) % 2 === 0;
-          const g = horizontal ? ctx.createLinearGradient(x, y, x, y + s) : ctx.createLinearGradient(x, y, x + s, y);
+          const g = horizontal
+            ? ctx.createLinearGradient(x, y, x, y + s)
+            : ctx.createLinearGradient(x, y, x + s, y);
           g.addColorStop(0, "#15181c");
           g.addColorStop(0.5, "#2a3038");
           g.addColorStop(1, "#15181c");

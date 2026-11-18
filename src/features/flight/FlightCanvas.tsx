@@ -27,7 +27,11 @@ export default function FlightCanvas({ controller }: { controller: FlightControl
       label="3D flight arena with chase camera following the drone"
       quality={quality}
       ready={hasSession}
-      camera={{ position: [s.x + CHASE_OFFSET.x, s.y + CHASE_OFFSET.y, s.z + CHASE_OFFSET.z], fov: 55, far: 420 }}
+      camera={{
+        position: [s.x + CHASE_OFFSET.x, s.y + CHASE_OFFSET.y, s.z + CHASE_OFFSET.z],
+        fov: 55,
+        far: 420,
+      }}
     >
       <FlightScene
         controller={controller}

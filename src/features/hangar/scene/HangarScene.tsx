@@ -52,7 +52,15 @@ export function framePreset(preset: HangarCamera, width: number, height: number)
 }
 
 /** Smoothly flies the camera to the requested preset; user orbiting interrupts. */
-function CameraRig({ preset, nonce, instant }: { preset: HangarCamera; nonce: number; instant: boolean }) {
+function CameraRig({
+  preset,
+  nonce,
+  instant,
+}: {
+  preset: HangarCamera;
+  nonce: number;
+  instant: boolean;
+}) {
   const camera = useThree((s) => s.camera);
   const controls = useThree((s) => s.controls) as OrbitControlsImpl | null;
   const width = useThree((s) => s.size.width);
@@ -92,7 +100,10 @@ function CameraRig({ preset, nonce, instant }: { preset: HangarCamera; nonce: nu
 }
 
 /** Spot light whose target is placed in world space (targets outside the scene graph need a manual matrix update). */
-function AimedSpot({ aim, ...props }: { aim: [number, number, number] } & ThreeElements["spotLight"]) {
+function AimedSpot({
+  aim,
+  ...props
+}: { aim: [number, number, number] } & ThreeElements["spotLight"]) {
   const ref = useRef<THREE.SpotLight>(null);
   useLayoutEffect(() => {
     const l = ref.current;
@@ -104,7 +115,15 @@ function AimedSpot({ aim, ...props }: { aim: [number, number, number] } & ThreeE
 }
 
 /** Horizontal scan plane that sweeps the airframe during inspection. */
-function InspectionScanner({ active, frozen, color }: { active: boolean; frozen: boolean; color: string }) {
+function InspectionScanner({
+  active,
+  frozen,
+  color,
+}: {
+  active: boolean;
+  frozen: boolean;
+  color: string;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const mat = useMemo(
     () =>
@@ -179,15 +198,15 @@ function HoloPanel({ frozen, engine }: { frozen: boolean; engine: EngineId }) {
   const ref = useRef<THREE.Group>(null);
   useFrame((state, delta) => {
     const { t } = frameTime(state.clock.elapsedTime, delta, frozen);
-    if (ref.current) ref.current.position.y = 1.8 + Math.sin(t * 0.9) * 0.04;
+    if (ref.current) ref.current.position.y = 1.85 + Math.sin(t * 0.9) * 0.04;
     mat.opacity = 0.78 + Math.sin(t * 13) * 0.04;
   });
   return (
-    <group ref={ref} position={[0.45, 1.75, -2.4]} rotation={[0, 0.42, 0]}>
+    <group ref={ref} position={[-1.35, 1.85, -1.45]} rotation={[0, 0.78, 0]}>
       <mesh material={mat}>
-        <planeGeometry args={[1.5, 0.75]} />
+        <planeGeometry args={[1.2, 0.6]} />
       </mesh>
-      <mesh position={[0, -0.95, 0]}>
+      <mesh position={[0, -0.9, 0]}>
         <cylinderGeometry args={[0.004, 0.004, 1.1, 4]} />
         <meshBasicMaterial color="#4fe3fb" transparent opacity={0.35} />
       </mesh>
@@ -209,7 +228,18 @@ export interface HangarSceneProps {
 }
 
 export function HangarScene(props: HangarSceneProps) {
-  const { paint, engine, lights, quality, preset, presetNonce, inspecting, frozen, seed, reducedMotion } = props;
+  const {
+    paint,
+    engine,
+    lights,
+    quality,
+    preset,
+    presetNonce,
+    inspecting,
+    frozen,
+    seed,
+    reducedMotion,
+  } = props;
   const q = QUALITY_PROFILES[quality];
   const accent = PAINTS[paint].accent;
   const rig = useMemo(() => createDroneRig(), []);
@@ -243,10 +273,14 @@ export function HangarScene(props: HangarSceneProps) {
 
     // Inspection sequence progress + exploded view.
     const ins = inspection.current;
-    if (inspecting) ins.progress = frozen ? 0.5 : Math.min(1, ins.progress + dt / INSPECTION_DURATION_S);
+    if (inspecting)
+      ins.progress = frozen ? 0.5 : Math.min(1, ins.progress + dt / INSPECTION_DURATION_S);
     else ins.progress = 0;
     const targetExplode = inspecting ? 1 : 0;
-    ins.explode = frozen || reducedMotion ? targetExplode : ins.explode + (targetExplode - ins.explode) * Math.min(1, dt * 2.5);
+    ins.explode =
+      frozen || reducedMotion
+        ? targetExplode
+        : ins.explode + (targetExplode - ins.explode) * Math.min(1, dt * 2.5);
     rig.explode = ins.explode;
     if (state.clock.elapsedTime - ins.lastPublish > 0.1) {
       ins.lastPublish = state.clock.elapsedTime;
@@ -257,7 +291,11 @@ export function HangarScene(props: HangarSceneProps) {
     if (d) {
       const bob = reducedMotion && !frozen ? 0 : Math.sin(t * 1.3) * 0.04;
       d.position.set(0, 1.2 + bob, 0);
-      d.rotation.set(Math.sin(t * 0.7) * 0.015, Math.PI + (inspecting ? 0 : Math.sin(t * 0.21) * 0.06), Math.sin(t * 0.9) * 0.02);
+      d.rotation.set(
+        Math.sin(t * 0.7) * 0.015,
+        Math.PI + (inspecting ? 0 : Math.sin(t * 0.21) * 0.06),
+        Math.sin(t * 0.9) * 0.02,
+      );
     }
   });
 
@@ -294,19 +332,79 @@ export function HangarScene(props: HangarSceneProps) {
         shadow-camera-near={2}
         shadow-camera-far={25}
       />
-      <spotLight position={[-4, 4.5, -5.5]} angle={0.6} penumbra={0.8} intensity={140} distance={20} decay={2} color="#3fdcff" />
-      <pointLight position={[-6.5, 2.4, 3.5]} intensity={22} distance={14} decay={2} color="#ff9f1c" />
+      <spotLight
+        position={[-4, 4.5, -5.5]}
+        angle={0.6}
+        penumbra={0.8}
+        intensity={140}
+        distance={20}
+        decay={2}
+        color="#3fdcff"
+      />
+      <pointLight
+        position={[-6.5, 2.4, 3.5]}
+        intensity={22}
+        distance={14}
+        decay={2}
+        color="#ff9f1c"
+      />
       <pointLight position={[6, 3, -6]} intensity={30} distance={16} decay={2} color="#4fe3fb" />
       {/* Wall washes so the architecture reads in the background. */}
-      <AimedSpot position={[0, 9, 2]} angle={0.75} penumbra={1} intensity={1400} distance={26} decay={2} color="#b8d8ff" aim={[0, 2, -14]} />
-      <AimedSpot position={[-2, 9, 4]} angle={0.8} penumbra={1} intensity={900} distance={24} decay={2} color="#9ccfff" aim={[-16, 2, -2]} />
+      <AimedSpot
+        position={[0, 9, 2]}
+        angle={0.75}
+        penumbra={1}
+        intensity={1400}
+        distance={26}
+        decay={2}
+        color="#b8d8ff"
+        aim={[0, 2, -14]}
+      />
+      <AimedSpot
+        position={[-2, 9, 4]}
+        angle={0.8}
+        penumbra={1}
+        intensity={900}
+        distance={24}
+        decay={2}
+        color="#9ccfff"
+        aim={[-16, 2, -2]}
+      />
 
       <Environment resolution={q.envResolution} frames={1} background={false}>
         <color attach="background" args={["#05070a"]} />
-        <Lightformer form="rect" intensity={3.2} color="#e9f6ff" position={[0, 8, 0]} rotation-x={Math.PI / 2} scale={[10, 3, 1]} />
-        <Lightformer form="rect" intensity={1.6} color="#dceeff" position={[4, 3, 6]} rotation-y={Math.PI * 0.8} scale={[6, 3, 1]} />
-        <Lightformer form="rect" intensity={1.4} color="#4fe3fb" position={[-8, 3, -3]} rotation-y={Math.PI / 2} scale={[8, 0.6, 1]} />
-        <Lightformer form="rect" intensity={1.2} color="#ff9f1c" position={[8, 2, 3]} rotation-y={-Math.PI / 2} scale={[6, 0.4, 1]} />
+        <Lightformer
+          form="rect"
+          intensity={3.2}
+          color="#e9f6ff"
+          position={[0, 8, 0]}
+          rotation-x={Math.PI / 2}
+          scale={[10, 3, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.6}
+          color="#dceeff"
+          position={[4, 3, 6]}
+          rotation-y={Math.PI * 0.8}
+          scale={[6, 3, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.4}
+          color="#4fe3fb"
+          position={[-8, 3, -3]}
+          rotation-y={Math.PI / 2}
+          scale={[8, 0.6, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.2}
+          color="#ff9f1c"
+          position={[8, 2, 3]}
+          rotation-y={-Math.PI / 2}
+          scale={[6, 0.4, 1]}
+        />
         <Lightformer form="ring" intensity={1.5} color="#8ff1ff" position={[0, 3, -9]} scale={4} />
       </Environment>
 
@@ -315,7 +413,14 @@ export function HangarScene(props: HangarSceneProps) {
       <Machinery seed={seed} frozen={frozen} />
       <HoloPanel frozen={frozen} engine={engine} />
 
-      <Drone ref={droneRef} paint={paint} lights={lights} rig={rig} castShadow={q.shadows} underglow />
+      <Drone
+        ref={droneRef}
+        paint={paint}
+        lights={lights}
+        rig={rig}
+        castShadow={q.shadows}
+        underglow
+      />
       <InspectionScanner active={inspecting} frozen={frozen} color={accent} />
 
       <DustParticles

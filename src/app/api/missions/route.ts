@@ -1,7 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { databaseError, jsonError, noStore, zodIssues } from "@/lib/server/http";
 import { createMission, listMissions } from "@/lib/server/missions";
-import { checkMissionPlausibility, missionQuerySchema, missionSubmissionSchema } from "@/lib/validation/mission";
+import {
+  checkMissionPlausibility,
+  missionQuerySchema,
+  missionSubmissionSchema,
+} from "@/lib/validation/mission";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +25,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get("content-type") ?? "";
-  if (!contentType.includes("application/json")) return jsonError(415, "Content-Type must be application/json");
+  if (!contentType.includes("application/json"))
+    return jsonError(415, "Content-Type must be application/json");
 
   const text = await req.text();
   if (text.length > MAX_BODY_BYTES) return jsonError(413, "Request body too large");

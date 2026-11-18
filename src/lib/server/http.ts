@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import type { ZodError } from "zod";
 import type { ApiError } from "@/domain/mission";
 
-export function jsonError(status: number, error: string, issues?: ApiError["issues"]): NextResponse<ApiError> {
+export function jsonError(
+  status: number,
+  error: string,
+  issues?: ApiError["issues"],
+): NextResponse<ApiError> {
   return NextResponse.json<ApiError>(issues ? { error, issues } : { error }, {
     status,
     headers: { "Cache-Control": "no-store" },

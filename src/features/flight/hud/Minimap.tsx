@@ -20,7 +20,15 @@ export function Minimap() {
       aria-label={`Arena map. Drone at x ${x.toFixed(0)}, z ${z.toFixed(0)}. Next gate ${Math.min(next + 1, 5)}.`}
       data-testid="minimap"
     >
-      <rect x={B.minX} y={B.minZ} width={W} height={H} fill="rgba(79,227,251,0.04)" stroke="rgba(79,227,251,0.5)" strokeWidth={0.8} />
+      <rect
+        x={B.minX}
+        y={B.minZ}
+        width={W}
+        height={H}
+        fill="rgba(79,227,251,0.04)"
+        stroke="rgba(79,227,251,0.5)"
+        strokeWidth={0.8}
+      />
       {ARENA.obstacles.map((o) =>
         o.kind === "cylinder" ? (
           <circle key={o.id} cx={o.x} cy={o.z} r={o.radius} fill="rgba(169,183,193,0.55)" />
@@ -37,7 +45,9 @@ export function Minimap() {
         ),
       )}
       <polyline
-        points={[ARENA.start, ...ARENA.gates.map((g) => g.center)].map((p) => `${p.x},${p.z}`).join(" ")}
+        points={[ARENA.start, ...ARENA.gates.map((g) => g.center)]
+          .map((p) => `${p.x},${p.z}`)
+          .join(" ")}
         fill="none"
         stroke="rgba(79,227,251,0.35)"
         strokeWidth={0.7}
@@ -49,8 +59,21 @@ export function Minimap() {
         const rz = -Math.sin(g.yaw) * g.halfWidth;
         return (
           <g key={g.number}>
-            <line x1={g.center.x - rx} y1={g.center.z - rz} x2={g.center.x + rx} y2={g.center.z + rz} stroke={color} strokeWidth={i === next ? 2.2 : 1.4} />
-            <text x={g.center.x + 6} y={g.center.z + 2} fill={color} fontSize={7} fontFamily="Consolas, monospace">
+            <line
+              x1={g.center.x - rx}
+              y1={g.center.z - rz}
+              x2={g.center.x + rx}
+              y2={g.center.z + rz}
+              stroke={color}
+              strokeWidth={i === next ? 2.2 : 1.4}
+            />
+            <text
+              x={g.center.x + 6}
+              y={g.center.z + 2}
+              fill={color}
+              fontSize={7}
+              fontFamily="Consolas, monospace"
+            >
               {g.number}
             </text>
           </g>

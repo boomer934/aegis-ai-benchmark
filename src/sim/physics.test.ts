@@ -8,7 +8,11 @@ import { lengthXZ } from "./vec";
 const FORWARD: FlightInput = { x: 0, y: 0, z: 1, boost: false };
 const airborne = () => createDroneState({ x: 0, y: 10, z: 0 });
 
-function runFor(seconds: number, input: FlightInput, engine: keyof typeof ENGINE_PROFILES = "SPORT") {
+function runFor(
+  seconds: number,
+  input: FlightInput,
+  engine: keyof typeof ENGINE_PROFILES = "SPORT",
+) {
   const d = airborne();
   const steps = Math.round(seconds / SIM_DT);
   for (let i = 0; i < steps; i++) stepDrone(d, input, ENGINE_PROFILES[engine], SIM_DT);
@@ -121,7 +125,9 @@ describe("FixedStepper — frame-rate independence", () => {
     const frames = Math.round(seconds / frameDt);
     let steps = 0;
     for (let f = 0; f < frames; f++) {
-      steps += stepper.advance(frameDt, (dt) => stepDrone(d, FORWARD, ENGINE_PROFILES.SPORT, dt)).steps;
+      steps += stepper.advance(frameDt, (dt) =>
+        stepDrone(d, FORWARD, ENGINE_PROFILES.SPORT, dt),
+      ).steps;
     }
     return { d, steps };
   }

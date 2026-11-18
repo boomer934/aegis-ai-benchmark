@@ -59,7 +59,8 @@ export function minimumCourseTimeMs(engine: (typeof ENGINE_IDS)[number]): number
 export function checkMissionPlausibility(m: MissionSubmission): string[] {
   const problems: string[] = [];
   const profile = ENGINE_PROFILES[m.engine];
-  const speedCeiling = Math.hypot(absoluteMaxSpeed(profile), profile.climbSpeed * profile.boostMultiplier) + 0.5;
+  const speedCeiling =
+    Math.hypot(absoluteMaxSpeed(profile), profile.climbSpeed * profile.boostMultiplier) + 0.5;
 
   if (m.outcome === "success" && m.checkpoints !== CHECKPOINT_COUNT) {
     problems.push("A successful mission must pass all 5 checkpoints");
@@ -79,7 +80,8 @@ export function checkMissionPlausibility(m: MissionSubmission): string[] {
     durationMs: m.durationMs,
     success: m.outcome === "success",
   });
-  if (m.score !== expected) problems.push(`Score ${m.score} does not match the scoring rules (expected ${expected})`);
+  if (m.score !== expected)
+    problems.push(`Score ${m.score} does not match the scoring rules (expected ${expected})`);
   if (m.maxSpeed > speedCeiling) problems.push(`Max speed exceeds the ${m.engine} engine limit`);
   if (m.avgSpeed > m.maxSpeed + 0.01) problems.push("Average speed cannot exceed max speed");
 
@@ -91,7 +93,8 @@ export function checkMissionPlausibility(m: MissionSubmission): string[] {
     }
   }
   const lastSplit = m.splitsMs.at(-1);
-  if (lastSplit !== undefined && lastSplit > m.durationMs) problems.push("Splits cannot exceed mission duration");
+  if (lastSplit !== undefined && lastSplit > m.durationMs)
+    problems.push("Splits cannot exceed mission duration");
 
   let prevT = -1;
   for (const [t, speed] of m.telemetry) {

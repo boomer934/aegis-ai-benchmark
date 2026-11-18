@@ -9,7 +9,12 @@ export interface FlightInput {
   boost: boolean;
 }
 
-export const NEUTRAL_INPUT: Readonly<FlightInput> = Object.freeze({ x: 0, y: 0, z: 0, boost: false });
+export const NEUTRAL_INPUT: Readonly<FlightInput> = Object.freeze({
+  x: 0,
+  y: 0,
+  z: 0,
+  boost: false,
+});
 
 export interface DroneState {
   position: Vec3;
@@ -50,7 +55,12 @@ export function createDroneState(position: Readonly<Vec3>): DroneState {
  * drag on released axes, profile speed caps, boost, energy drain and attitude.
  * Mutates `d` in place (no allocations: this runs 120×/s).
  */
-export function stepDrone(d: DroneState, rawInput: Readonly<FlightInput>, p: EngineProfile, dt: number): void {
+export function stepDrone(
+  d: DroneState,
+  rawInput: Readonly<FlightInput>,
+  p: EngineProfile,
+  dt: number,
+): void {
   copyVec(d.prevPosition, d.position);
 
   let ix = clamp(rawInput.x, -1, 1);

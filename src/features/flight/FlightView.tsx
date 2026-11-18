@@ -10,7 +10,13 @@ import { modeQuery } from "@/lib/runtime";
 import { configStore, useConfig } from "@/stores/configStore";
 import { useFlight } from "@/stores/flightStore";
 import { getFlightController } from "./controller";
-import { CenterOverlay, ControlsHelp, ResultDialog, StatusBar, TelemetryCluster } from "./hud/FlightHud";
+import {
+  CenterOverlay,
+  ControlsHelp,
+  ResultDialog,
+  StatusBar,
+  TelemetryCluster,
+} from "./hud/FlightHud";
 import { Minimap } from "./hud/Minimap";
 import { TouchControls } from "./hud/TouchControls";
 import { useFlightKeyboard } from "./input";
@@ -74,7 +80,10 @@ export function FlightView() {
 
   return (
     <div className="relative flex flex-1 flex-col">
-      <section aria-label="Flight arena" className="relative min-h-[calc(100dvh-7.5rem)] flex-1 overflow-hidden md:min-h-0">
+      <section
+        aria-label="Flight arena"
+        className="relative min-h-[calc(100dvh-7.5rem)] flex-1 overflow-hidden md:min-h-0"
+      >
         <FlightCanvas controller={controller} />
 
         {/* Top: mission status */}
@@ -85,15 +94,15 @@ export function FlightView() {
         </div>
 
         {/* Left: flight data + controls help */}
-        <div className="pointer-events-none absolute left-3 top-24 z-10 hidden flex-col gap-3 md:flex lg:left-6">
+        <div className="pointer-events-none absolute left-3 top-24 z-10 flex flex-col gap-3 lg:left-6">
           <TelemetryCluster />
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto hidden md:block">
             <ControlsHelp defaultOpen={!mode.benchmark} />
           </div>
         </div>
 
         {/* Right: tactical map */}
-        <div className="pointer-events-none absolute right-3 top-24 z-10 hidden h-[300px] w-[150px] md:block lg:right-6" >
+        <div className="pointer-events-none absolute right-3 top-24 z-10 hidden h-[300px] w-[150px] md:block lg:right-6">
           <div className="panel h-full p-2">
             <div className="label mb-1 !text-[9px]">Course map</div>
             <div className="h-[calc(100%-18px)]">
@@ -105,10 +114,13 @@ export function FlightView() {
         <CenterOverlay />
 
         {/* Bottom: mission actions */}
-        <div className={`absolute inset-x-0 z-20 flex justify-center gap-2 px-3 ${touch ? "bottom-40" : "bottom-6"}`}>
+        <div
+          className={`absolute inset-x-0 z-20 flex justify-center gap-2 px-3 ${touch ? "bottom-40" : "bottom-6"}`}
+        >
           {staged ? (
             <div className="panel px-4 py-2 text-[12px] text-steel-300" data-testid="staged-hint">
-              Benchmark staged flight · press any flight key or <span className="text-ion-300">Start</span> to take control
+              Benchmark staged flight · press any flight key or{" "}
+              <span className="text-ion-300">Start</span> to take control
             </div>
           ) : null}
           {!active && status !== "success" && status !== "failed" && (
@@ -130,7 +142,8 @@ export function FlightView() {
                 className="seg-btn panel-flat border border-amber-500/50 px-4 py-2.5 text-[12px] text-amber-400"
                 data-testid="pause-button"
               >
-                {status === "paused" ? "Resume" : "Pause"} <span className="font-mono text-[10px] opacity-70">(Space)</span>
+                {status === "paused" ? "Resume" : "Pause"}{" "}
+                <span className="font-mono text-[10px] opacity-70">(Space)</span>
               </button>
               <button
                 type="button"
@@ -144,11 +157,6 @@ export function FlightView() {
           )}
         </div>
 
-        {/* Mobile: compact telemetry */}
-        <div className="pointer-events-none absolute left-3 top-24 z-10 md:hidden">
-          <TelemetryCluster />
-        </div>
-
         {touch && <TouchControls onInput={() => controller.takeControl()} />}
         <button
           type="button"
@@ -160,7 +168,11 @@ export function FlightView() {
           Touch controls
         </button>
 
-        <ResultDialog onReplay={() => controller.reset()} onRetrySave={retry} controlHref={`/control${modeQuery(mode)}`} />
+        <ResultDialog
+          onReplay={() => controller.reset()}
+          onRetrySave={retry}
+          controlHref={`/control${modeQuery(mode)}`}
+        />
         {showPerf && !mode.benchmark && <PerfPanel />}
       </section>
     </div>

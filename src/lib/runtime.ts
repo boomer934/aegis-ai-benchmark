@@ -23,7 +23,8 @@ export const BENCHMARK_TIME = 4.2;
 
 export type SearchParams = Record<string, string | string[] | undefined>;
 
-const first = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v[0] : v);
+const first = (v: string | string[] | undefined): string | undefined =>
+  Array.isArray(v) ? v[0] : v;
 
 export function parseRuntimeMode(params: SearchParams): RuntimeMode {
   const benchmark = first(params.benchmark) === "1";
@@ -31,7 +32,8 @@ export function parseRuntimeMode(params: SearchParams): RuntimeMode {
   const seedRaw = Number.parseInt(first(params.seed) ?? "", 10);
   const seed = Number.isFinite(seedRaw) && seedRaw >= 0 ? seedRaw % 2 ** 31 : DEFAULT_SEED;
   const sceneRaw = first(params.scene);
-  const scene = sceneRaw === "hangar" || sceneRaw === "flight" || sceneRaw === "telemetry" ? sceneRaw : null;
+  const scene =
+    sceneRaw === "hangar" || sceneRaw === "flight" || sceneRaw === "telemetry" ? sceneRaw : null;
   const camera = first(params.camera) ?? null;
   return { benchmark, perf, seed, scene, camera };
 }

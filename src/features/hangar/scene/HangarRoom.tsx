@@ -5,7 +5,12 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useLightShaftMaterial } from "@/components/three/Atmosphere";
 import { frameTime } from "@/components/three/sceneTime";
-import { hangarFloorTextures, hazardTexture, holoLabelTexture, wallPanelTexture } from "@/components/three/textures";
+import {
+  hangarFloorTextures,
+  hazardTexture,
+  holoLabelTexture,
+  wallPanelTexture,
+} from "@/components/three/textures";
 import { createRng, deriveSeed } from "@/sim/rng";
 
 /** Architectural shell: floor, walls, ceiling trusses, lamps and blast door. */
@@ -49,7 +54,15 @@ function InstancedBoxes({
   );
 }
 
-export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen: boolean; volumetrics: boolean }) {
+export function HangarRoom({
+  seed,
+  frozen,
+  volumetrics,
+}: {
+  seed: number;
+  frozen: boolean;
+  volumetrics: boolean;
+}) {
   const { mats, clones } = useMemo(() => {
     const floor = hangarFloorTextures(seed);
     const wall = wallPanelTexture(seed);
@@ -76,16 +89,44 @@ export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen
       }),
       wallSide: new THREE.MeshStandardMaterial({ map: wallSide, roughness: 0.62, metalness: 0.3 }),
       wallBack: new THREE.MeshStandardMaterial({ map: wallBack, roughness: 0.62, metalness: 0.3 }),
-      structure: new THREE.MeshStandardMaterial({ color: "#20272f", roughness: 0.55, metalness: 0.75 }),
+      structure: new THREE.MeshStandardMaterial({
+        color: "#20272f",
+        roughness: 0.55,
+        metalness: 0.75,
+      }),
       truss: new THREE.MeshStandardMaterial({ color: "#161b21", roughness: 0.6, metalness: 0.7 }),
       door: new THREE.MeshStandardMaterial({ color: "#262d35", roughness: 0.45, metalness: 0.8 }),
       hazard: new THREE.MeshStandardMaterial({ map: hazard, roughness: 0.6, metalness: 0.2 }),
-      lampCyan: new THREE.MeshStandardMaterial({ color: "#c9f7ff", emissive: "#7fe9ff", emissiveIntensity: 3, toneMapped: false }),
-      lampWarm: new THREE.MeshStandardMaterial({ color: "#fff3df", emissive: "#ffe3b8", emissiveIntensity: 4, toneMapped: false }),
-      stripAmber: new THREE.MeshStandardMaterial({ color: "#ff9f1c", emissive: "#ff8a00", emissiveIntensity: 2.2, toneMapped: false }),
-      doorStrip: new THREE.MeshStandardMaterial({ color: "#ff9f1c", emissive: "#ff8a00", emissiveIntensity: 2, toneMapped: false }),
+      lampCyan: new THREE.MeshStandardMaterial({
+        color: "#c9f7ff",
+        emissive: "#7fe9ff",
+        emissiveIntensity: 3,
+        toneMapped: false,
+      }),
+      lampWarm: new THREE.MeshStandardMaterial({
+        color: "#fff3df",
+        emissive: "#ffe3b8",
+        emissiveIntensity: 4,
+        toneMapped: false,
+      }),
+      stripAmber: new THREE.MeshStandardMaterial({
+        color: "#ff9f1c",
+        emissive: "#ff8a00",
+        emissiveIntensity: 2.2,
+        toneMapped: false,
+      }),
+      doorStrip: new THREE.MeshStandardMaterial({
+        color: "#ff9f1c",
+        emissive: "#ff8a00",
+        emissiveIntensity: 2,
+        toneMapped: false,
+      }),
       sign: new THREE.MeshBasicMaterial({
-        map: holoLabelTexture("door-sign", ["BAY 07 · FLIGHT TEST", "CLEARANCE 4.2 M", "PRESSURE SEAL: ARMED"], "#ffbe4d"),
+        map: holoLabelTexture(
+          "door-sign",
+          ["BAY 07 · FLIGHT TEST", "CLEARANCE 4.2 M", "PRESSURE SEAL: ARMED"],
+          "#ffbe4d",
+        ),
         transparent: true,
         toneMapped: false,
       }),
@@ -121,9 +162,11 @@ export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen
       }
     }
     const girders: { p: [number, number, number]; s: [number, number, number] }[] = [];
-    for (const x of [-8, 0, 8]) girders.push({ p: [x, ROOM.height - 0.3, 0], s: [0.3, 0.3, ROOM.halfZ * 2] });
+    for (const x of [-8, 0, 8])
+      girders.push({ p: [x, ROOM.height - 0.3, 0], s: [0.3, 0.3, ROOM.halfZ * 2] });
     const lamps: [number, number, number][] = [];
-    for (const x of [-6, 0, 6]) for (const z of [-6, 0, 6]) lamps.push([x + (rng() - 0.5) * 0.2, ROOM.height - 1.5, z]);
+    for (const x of [-6, 0, 6])
+      for (const z of [-6, 0, 6]) lamps.push([x + (rng() - 0.5) * 0.2, ROOM.height - 1.5, z]);
     const cableTrays: { p: [number, number, number]; s: [number, number, number] }[] = [
       { p: [-ROOM.halfX + 1.2, 7.2, 0], s: [0.5, 0.12, ROOM.halfZ * 2 - 2] },
       { p: [ROOM.halfX - 1.2, 7.2, 0], s: [0.5, 0.12, ROOM.halfZ * 2 - 2] },
@@ -156,7 +199,13 @@ export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen
       </mesh>
       {/* Hazard walkway border */}
       {[-1, 1].map((s) => (
-        <mesh key={`hz-${s}`} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, s * 7.5]} material={mats.hazard} receiveShadow>
+        <mesh
+          key={`hz-${s}`}
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, 0.005, s * 7.5]}
+          material={mats.hazard}
+          receiveShadow
+        >
           <planeGeometry args={[ROOM.halfX * 2, 0.35]} />
         </mesh>
       ))}
@@ -165,13 +214,27 @@ export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen
       <mesh position={[0, ROOM.height / 2, -ROOM.halfZ]} material={mats.wallBack} receiveShadow>
         <planeGeometry args={[ROOM.halfX * 2, ROOM.height]} />
       </mesh>
-      <mesh position={[-ROOM.halfX, ROOM.height / 2, 0]} rotation={[0, Math.PI / 2, 0]} material={mats.wallSide} receiveShadow>
+      <mesh
+        position={[-ROOM.halfX, ROOM.height / 2, 0]}
+        rotation={[0, Math.PI / 2, 0]}
+        material={mats.wallSide}
+        receiveShadow
+      >
         <planeGeometry args={[ROOM.halfZ * 2, ROOM.height]} />
       </mesh>
-      <mesh position={[ROOM.halfX, ROOM.height / 2, 0]} rotation={[0, -Math.PI / 2, 0]} material={mats.wallSide} receiveShadow>
+      <mesh
+        position={[ROOM.halfX, ROOM.height / 2, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        material={mats.wallSide}
+        receiveShadow
+      >
         <planeGeometry args={[ROOM.halfZ * 2, ROOM.height]} />
       </mesh>
-      <mesh position={[0, ROOM.height / 2, ROOM.halfZ]} rotation={[0, Math.PI, 0]} material={mats.wallBack}>
+      <mesh
+        position={[0, ROOM.height / 2, ROOM.halfZ]}
+        rotation={[0, Math.PI, 0]}
+        material={mats.wallBack}
+      >
         <planeGeometry args={[ROOM.halfX * 2, ROOM.height]} />
       </mesh>
       {/* Ceiling */}
@@ -214,7 +277,12 @@ export function HangarRoom({ seed, frozen, volumetrics }: { seed: number; frozen
 
       {/* Cyan wall light bands */}
       {[-1, 1].map((s) => (
-        <mesh key={`band-${s}`} position={[s * (ROOM.halfX - 0.05), 3.2, 0]} rotation={[0, (-s * Math.PI) / 2, 0]} material={mats.lampCyan}>
+        <mesh
+          key={`band-${s}`}
+          position={[s * (ROOM.halfX - 0.05), 3.2, 0]}
+          rotation={[0, (-s * Math.PI) / 2, 0]}
+          material={mats.lampCyan}
+        >
           <planeGeometry args={[ROOM.halfZ * 2 - 1, 0.07]} />
         </mesh>
       ))}

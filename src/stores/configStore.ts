@@ -42,7 +42,12 @@ export function hydrateConfig(opts: { benchmark: boolean; forceQuality?: Quality
   }
   if (opts.benchmark) {
     // Fixed, reproducible configuration.
-    configStore.set({ ...DEFAULT_DRONE_CONFIG, quality: "HIGH", callsign: "BENCH-42", hydrated: true });
+    configStore.set({
+      ...DEFAULT_DRONE_CONFIG,
+      quality: "HIGH",
+      callsign: "BENCH-42",
+      hydrated: true,
+    });
     return;
   }
   let patch: Partial<ConfigState> = {};
@@ -50,7 +55,10 @@ export function hydrateConfig(opts: { benchmark: boolean; forceQuality?: Quality
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed: unknown = JSON.parse(raw);
-      const rec = (typeof parsed === "object" && parsed !== null ? parsed : {}) as Record<string, unknown>;
+      const rec = (typeof parsed === "object" && parsed !== null ? parsed : {}) as Record<
+        string,
+        unknown
+      >;
       patch = {
         ...sanitizeDroneConfig(rec),
         ...(isQualityId(rec.quality) ? { quality: rec.quality } : {}),
@@ -64,7 +72,11 @@ export function hydrateConfig(opts: { benchmark: boolean; forceQuality?: Quality
   } catch {
     // Storage unavailable (private mode): defaults apply.
   }
-  configStore.set({ ...patch, ...(opts.forceQuality ? { quality: opts.forceQuality } : {}), hydrated: true });
+  configStore.set({
+    ...patch,
+    ...(opts.forceQuality ? { quality: opts.forceQuality } : {}),
+    hydrated: true,
+  });
   persistEnabled = true;
 }
 
@@ -72,10 +84,14 @@ configStore.subscribe(() => {
   if (!persistEnabled) return;
   const { paint, engine, lights, quality, callsign } = configStore.get();
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ paint, engine, lights, quality, callsign }));
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ paint, engine, lights, quality, callsign }),
+    );
   } catch {
     // Ignore quota / privacy errors.
   }
 });
 
-export const useConfig = <S>(selector: (s: ConfigState) => S): S => useStore(configStore, selector, initial);
+export const useConfig = <S>(selector: (s: ConfigState) => S): S =>
+  useStore(configStore, selector, initial);

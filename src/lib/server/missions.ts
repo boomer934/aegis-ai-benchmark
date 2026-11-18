@@ -112,7 +112,12 @@ export async function listMissions(opts: {
   };
   const db = getDb();
   const [rows, total] = await Promise.all([
-    db.missionRecord.findMany({ where, orderBy: { createdAt: "desc" }, take: opts.limit, select: summarySelect }),
+    db.missionRecord.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      take: opts.limit,
+      select: summarySelect,
+    }),
     db.missionRecord.count({ where }),
   ]);
   return { missions: rows.map((r) => toSummary({ ...r, telemetry: "" })), total };
@@ -124,7 +129,10 @@ export async function getMission(id: string): Promise<MissionDetail | null> {
 }
 
 /** Successful missions ranked by score, ties broken by faster time then earlier date. */
-export async function leaderboard(opts: { limit: number; engine?: string }): Promise<MissionSummary[]> {
+export async function leaderboard(opts: {
+  limit: number;
+  engine?: string;
+}): Promise<MissionSummary[]> {
   const rows = await getDb().missionRecord.findMany({
     where: { outcome: "success", ...(opts.engine ? { engine: opts.engine } : {}) },
     orderBy: [{ score: "desc" }, { durationMs: "asc" }, { createdAt: "asc" }],

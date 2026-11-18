@@ -16,7 +16,12 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
     return {
       hz,
       base: new THREE.MeshStandardMaterial({ color: "#1b2129", metalness: 0.85, roughness: 0.35 }),
-      top: new THREE.MeshStandardMaterial({ color: "#0f1318", metalness: 0.6, roughness: 0.62, envMapIntensity: 0.35 }),
+      top: new THREE.MeshStandardMaterial({
+        color: "#0f1318",
+        metalness: 0.6,
+        roughness: 0.62,
+        envMapIntensity: 0.35,
+      }),
       hazard: new THREE.MeshStandardMaterial({ map: hz, metalness: 0.3, roughness: 0.5 }),
       decal: new THREE.MeshBasicMaterial({
         map: padMarkingTexture(),
@@ -27,7 +32,12 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
         polygonOffset: true,
         polygonOffsetFactor: -2,
       }),
-      glow: new THREE.MeshStandardMaterial({ color: "#0b2a33", emissive: "#4fe3fb", emissiveIntensity: 0.85, toneMapped: false }),
+      glow: new THREE.MeshStandardMaterial({
+        color: "#0b2a33",
+        emissive: "#4fe3fb",
+        emissiveIntensity: 0.85,
+        toneMapped: false,
+      }),
       scan: new THREE.MeshBasicMaterial({
         color: "#4fe3fb",
         transparent: true,
@@ -37,7 +47,12 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
         side: THREE.DoubleSide,
         toneMapped: false,
       }),
-      light: new THREE.MeshStandardMaterial({ color: "#fff", emissive: "#ffb64d", emissiveIntensity: 3, toneMapped: false }),
+      light: new THREE.MeshStandardMaterial({
+        color: "#fff",
+        emissive: "#ffb64d",
+        emissiveIntensity: 3,
+        toneMapped: false,
+      }),
     };
   }, []);
 
@@ -81,7 +96,11 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
       <mesh position={[0, 0.17, 0]} material={mats.top} receiveShadow>
         <cylinderGeometry args={[R + 0.1, R + 0.12, 0.1, 8]} />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, Math.PI / 8]} position={[0, 0.222, 0]} material={mats.decal}>
+      <mesh
+        rotation={[-Math.PI / 2, 0, Math.PI / 8]}
+        position={[0, 0.222, 0]}
+        material={mats.decal}
+      >
         <circleGeometry args={[R, 64]} />
       </mesh>
       {/* Emissive inlay rings */}
@@ -92,7 +111,11 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
       {Array.from({ length: 8 }, (_, i) => {
         const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
         return (
-          <mesh key={`ml-${i}`} position={[Math.cos(a) * (R + 0.36), 0.13, Math.sin(a) * (R + 0.36)]} material={mats.light}>
+          <mesh
+            key={`ml-${i}`}
+            position={[Math.cos(a) * (R + 0.36), 0.13, Math.sin(a) * (R + 0.36)]}
+            material={mats.light}
+          >
             <boxGeometry args={[0.12, 0.05, 0.12]} />
           </mesh>
         );
@@ -100,12 +123,21 @@ export function Platform({ frozen, accent }: { frozen: boolean; accent: string }
       {/* Rotating holo-scanner ring + expanding scan pulse */}
       <group ref={rotor} position={[0, 0.25, 0]}>
         {Array.from({ length: 3 }, (_, i) => (
-          <mesh key={`arc-${i}`} rotation={[-Math.PI / 2, 0, (i * Math.PI * 2) / 3]} material={mats.glow}>
+          <mesh
+            key={`arc-${i}`}
+            rotation={[-Math.PI / 2, 0, (i * Math.PI * 2) / 3]}
+            material={mats.glow}
+          >
             <ringGeometry args={[R + 0.55, R + 0.575, 48, 1, 0, Math.PI / 2.4]} />
           </mesh>
         ))}
       </group>
-      <mesh ref={scanRing} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.23, 0]} material={mats.scan}>
+      <mesh
+        ref={scanRing}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.23, 0]}
+        material={mats.scan}
+      >
         <ringGeometry args={[R * 0.98, R, 96]} />
       </mesh>
     </group>

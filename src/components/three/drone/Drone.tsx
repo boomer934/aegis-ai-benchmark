@@ -24,7 +24,13 @@ export interface DroneRig {
   pitch: number;
 }
 
-export const createDroneRig = (rotorSpeed = 600): DroneRig => ({ rotorSpeed, explode: 0, time: 0, dt: 0, pitch: 0 });
+export const createDroneRig = (rotorSpeed = 600): DroneRig => ({
+  rotorSpeed,
+  explode: 0,
+  time: 0,
+  dt: 0,
+  pitch: 0,
+});
 
 interface DroneProps {
   paint: PaintId;
@@ -189,16 +195,25 @@ export const Drone = forwardRef<THREE.Group, DroneProps>(function Drone(
 
       {/* Antennas */}
       {[-1, 1].map((side) => (
-        <group key={`ant-${side}`} position={[side * 0.075, 0.1, 0.3]} rotation={[0.55, 0, side * 0.15]}>
+        <group
+          key={`ant-${side}`}
+          position={[side * 0.075, 0.1, 0.3]}
+          rotation={[0.55, 0, side * 0.15]}
+        >
           <mesh geometry={g.antenna} material={m.darkMetal} />
           <mesh geometry={g.led} material={m.strobe} position={[0, 0.13, 0]} scale={0.6} />
         </group>
       ))}
 
       {underglow && lights && (
-        <pointLight position={[0, -0.25, 0]} color={accentColor} intensity={1.6} distance={3} decay={2} />
+        <pointLight
+          position={[0, -0.25, 0]}
+          color={accentColor}
+          intensity={1.6}
+          distance={3}
+          decay={2}
+        />
       )}
     </group>
   );
 });
-

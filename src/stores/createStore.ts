@@ -37,7 +37,11 @@ export function createStore<T extends object>(initial: T): Store<T> {
   };
 }
 
-export function useStore<T extends object, S>(store: Store<T>, selector: (s: T) => S, serverState?: T): S {
+export function useStore<T extends object, S>(
+  store: Store<T>,
+  selector: (s: T) => S,
+  serverState?: T,
+): S {
   return useSyncExternalStore(
     store.subscribe,
     () => selector(store.get()),

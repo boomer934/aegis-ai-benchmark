@@ -49,11 +49,23 @@ export function useDroneMaterials(paint: PaintId, lights: boolean): DroneMateria
     const carbon = carbonTexture();
     const blurTex = blurAlphaTexture();
     return {
-      hull: new THREE.MeshPhysicalMaterial({ clearcoat: 0.7, clearcoatRoughness: 0.22, envMapIntensity: 1.2 }),
-      hullUpper: new THREE.MeshPhysicalMaterial({ clearcoat: 0.9, clearcoatRoughness: 0.12, envMapIntensity: 1.3 }),
+      hull: new THREE.MeshPhysicalMaterial({
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.22,
+        envMapIntensity: 1.2,
+      }),
+      hullUpper: new THREE.MeshPhysicalMaterial({
+        clearcoat: 0.9,
+        clearcoatRoughness: 0.12,
+        envMapIntensity: 1.3,
+      }),
       frame: new THREE.MeshStandardMaterial({ map: carbon, roughness: 0.42, metalness: 0.35 }),
       metal: new THREE.MeshStandardMaterial({ color: "#b9c3cc", metalness: 1, roughness: 0.26 }),
-      darkMetal: new THREE.MeshStandardMaterial({ color: "#2b3138", metalness: 0.85, roughness: 0.38 }),
+      darkMetal: new THREE.MeshStandardMaterial({
+        color: "#2b3138",
+        metalness: 0.85,
+        roughness: 0.38,
+      }),
       rubber: new THREE.MeshStandardMaterial({ color: "#0a0b0d", metalness: 0, roughness: 0.92 }),
       glass: new THREE.MeshPhysicalMaterial({
         metalness: 0.3,
@@ -64,7 +76,11 @@ export function useDroneMaterials(paint: PaintId, lights: boolean): DroneMateria
         transparent: true,
         opacity: 0.93,
       }),
-      accent: new THREE.MeshStandardMaterial({ roughness: 0.35, metalness: 0.2, toneMapped: false }),
+      accent: new THREE.MeshStandardMaterial({
+        roughness: 0.35,
+        metalness: 0.2,
+        toneMapped: false,
+      }),
       prop: new THREE.MeshStandardMaterial({ color: "#1b1f25", metalness: 0.25, roughness: 0.45 }),
       blur: new THREE.MeshBasicMaterial({
         color: "#a8b4bf",

@@ -21,7 +21,10 @@
     "test:e2e": "playwright test",
     "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:setup": "prisma generate && prisma migrate deploy",
+    "bench:screenshots": "node scripts/capture-screenshots.mjs http://localhost:3000 artifacts/screenshots",
+    "bench:perf": "node scripts/measure-perf.mjs http://localhost:3000 artifacts/perf/perf-results.json"
   },
   "dependencies": {
     "@prisma/adapter-libsql": "7.10.1",

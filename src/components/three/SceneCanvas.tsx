@@ -25,7 +25,9 @@ function PerfProbe({ scene, quality }: { scene: string; quality: QualityId }) {
     try {
       const ctx = gl.getContext();
       const ext = ctx.getExtension("WEBGL_debug_renderer_info");
-      perfStats.renderer = ext ? String(ctx.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : String(ctx.getParameter(ctx.RENDERER));
+      perfStats.renderer = ext
+        ? String(ctx.getParameter(ext.UNMASKED_RENDERER_WEBGL))
+        : String(ctx.getParameter(ctx.RENDERER));
     } catch {
       perfStats.renderer = "unavailable";
     }
@@ -61,7 +63,8 @@ function SceneReadySignal({ name, ready }: { name: string; ready: boolean }) {
   });
   useEffect(
     () => () => {
-      if (document.documentElement.dataset.sceneReady === name) delete document.documentElement.dataset.sceneReady;
+      if (document.documentElement.dataset.sceneReady === name)
+        delete document.documentElement.dataset.sceneReady;
     },
     [name],
   );
@@ -77,7 +80,10 @@ function webglAvailable(): boolean {
   }
 }
 
-class SceneErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { error: boolean }> {
+class SceneErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { error: boolean }
+> {
   state = { error: false };
   static getDerivedStateFromError() {
     return { error: true };
@@ -103,7 +109,11 @@ function SceneFallback({ reason }: { reason: string }) {
 
 export function SceneLoader({ label }: { label: string }) {
   return (
-    <div className="pointer-events-none absolute inset-0 grid place-items-center" role="status" aria-live="polite">
+    <div
+      className="pointer-events-none absolute inset-0 grid place-items-center"
+      role="status"
+      aria-live="polite"
+    >
       <div className="flex flex-col items-center gap-4">
         <div className="relative h-14 w-14">
           <div className="absolute inset-0 animate-spin rounded-full border border-ion-400/20 border-t-ion-400 [animation-duration:1.2s]" />
@@ -131,29 +141,53 @@ export interface SceneCanvasProps {
  * fixed DPR for measurements, perf probe, ready signal and WebGL fallbacks.
  * The canvas is keyed by quality because antialiasing is a context-creation flag.
  */
-export function SceneCanvas({ name, quality, camera, ready = true, children, className, label }: SceneCanvasProps) {
+export function SceneCanvas({
+  name,
+  quality,
+  camera,
+  ready = true,
+  children,
+  className,
+  label,
+}: SceneCanvasProps) {
   const mode = useRuntime();
   const profile = QUALITY_PROFILES[quality];
   // Client-only component (loaded with ssr: false), so this runs in the browser.
   const [supported] = useState(webglAvailable);
   const [created, setCreated] = useState(false);
 
-  const dpr: number | [number, number] = mode.benchmark || mode.perf ? MEASUREMENT_DPR : [1, profile.maxDpr];
+  const dpr: number | [number, number] =
+    mode.benchmark || mode.perf ? MEASUREMENT_DPR : [1, profile.maxDpr];
 
   if (supported === false) {
-    return <SceneFallback reason="WebGL is not available in this browser. Enable hardware acceleration to view the 3D scene." />;
+    return (
+      <SceneFallback reason="WebGL is not available in this browser. Enable hardware acceleration to view the 3D scene." />
+    );
   }
 
   return (
     <div className={className ?? "absolute inset-0"} data-testid={`canvas-${name}`}>
       {supported && (
-        <SceneErrorBoundary fallback={<SceneFallback reason="The 3D renderer failed to start. Reload the page to retry." />}>
+        <SceneErrorBoundary
+          fallback={
+            <SceneFallback reason="The 3D renderer failed to start. Reload the page to retry." />
+          }
+        >
           <Canvas
             key={quality}
             dpr={dpr}
             shadows={profile.shadows ? "percentage" : false}
-            gl={{ antialias: profile.antialias, powerPreference: "high-performance", preserveDrawingBuffer: false }}
-            camera={{ position: camera.position, fov: camera.fov, near: camera.near ?? 0.1, far: camera.far ?? 400 }}
+            gl={{
+              antialias: profile.antialias,
+              powerPreference: "high-performance",
+              preserveDrawingBuffer: false,
+            }}
+            camera={{
+              position: camera.position,
+              fov: camera.fov,
+              near: camera.near ?? 0.1,
+              far: camera.far ?? 400,
+            }}
             onCreated={({ gl }) => {
               gl.toneMapping = THREE.ACESFilmicToneMapping;
               gl.toneMappingExposure = 1.05;

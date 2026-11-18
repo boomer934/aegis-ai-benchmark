@@ -5,7 +5,13 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { frameTime } from "@/components/three/sceneTime";
 import { arenaFloorTexture, gateNumberTexture, hazardTexture } from "@/components/three/textures";
-import { ARENA, GATE_FRAME_THICKNESS, type BoxObstacle, type CylinderObstacle, type Gate } from "@/sim/arena";
+import {
+  ARENA,
+  GATE_FRAME_THICKNESS,
+  type BoxObstacle,
+  type CylinderObstacle,
+  type Gate,
+} from "@/sim/arena";
 import { createRng, deriveSeed } from "@/sim/rng";
 
 /**
@@ -27,15 +33,38 @@ function useArenaMaterials() {
     hz.needsUpdate = true;
     return {
       hz,
-      floor: new THREE.MeshStandardMaterial({ map: arenaFloorTexture(), roughness: 0.82, metalness: 0.35 }),
+      floor: new THREE.MeshStandardMaterial({
+        map: arenaFloorTexture(),
+        roughness: 0.82,
+        metalness: 0.35,
+      }),
       pillar: new THREE.MeshStandardMaterial({ color: "#2a323b", roughness: 0.5, metalness: 0.7 }),
       block: new THREE.MeshStandardMaterial({ color: "#232a32", roughness: 0.55, metalness: 0.6 }),
       hazard: new THREE.MeshStandardMaterial({ map: hz, roughness: 0.6, metalness: 0.2 }),
-      edge: new THREE.LineBasicMaterial({ color: "#ff9f1c", transparent: true, opacity: 0.85, toneMapped: false }),
-      bandAmber: new THREE.MeshStandardMaterial({ color: "#ff9f1c", emissive: "#ff8a00", emissiveIntensity: 1.8, toneMapped: false }),
-      bandCyan: new THREE.MeshStandardMaterial({ color: "#4fe3fb", emissive: "#4fe3fb", emissiveIntensity: 1.6, toneMapped: false }),
+      edge: new THREE.LineBasicMaterial({
+        color: "#ff9f1c",
+        transparent: true,
+        opacity: 0.85,
+        toneMapped: false,
+      }),
+      bandAmber: new THREE.MeshStandardMaterial({
+        color: "#ff9f1c",
+        emissive: "#ff8a00",
+        emissiveIntensity: 1.8,
+        toneMapped: false,
+      }),
+      bandCyan: new THREE.MeshStandardMaterial({
+        color: "#4fe3fb",
+        emissive: "#4fe3fb",
+        emissiveIntensity: 1.6,
+        toneMapped: false,
+      }),
       tower: new THREE.MeshStandardMaterial({ color: "#10151b", roughness: 0.7, metalness: 0.5 }),
-      gateFrame: new THREE.MeshStandardMaterial({ color: "#1c2228", roughness: 0.35, metalness: 0.85 }),
+      gateFrame: new THREE.MeshStandardMaterial({
+        color: "#1c2228",
+        roughness: 0.35,
+        metalness: 0.85,
+      }),
     };
   }, []);
   useEffect(
@@ -99,7 +128,13 @@ function BoundaryField({ frozen }: { frozen: boolean }) {
 }
 
 /** Instanced exterior towers and ceiling trusses for depth outside the field. */
-function Surroundings({ seed, mats }: { seed: number; mats: ReturnType<typeof useArenaMaterials> }) {
+function Surroundings({
+  seed,
+  mats,
+}: {
+  seed: number;
+  mats: ReturnType<typeof useArenaMaterials>;
+}) {
   const towers = useRef<THREE.InstancedMesh>(null);
   const trusses = useRef<THREE.InstancedMesh>(null);
   const lamps = useRef<THREE.InstancedMesh>(null);
@@ -112,8 +147,20 @@ function Surroundings({ seed, mats }: { seed: number; mats: ReturnType<typeof us
       const w = 6 + rng() * 10;
       const h = 18 + rng() * 40;
       const d = 6 + rng() * 10;
-      towers.push(new THREE.Matrix4().compose(new THREE.Vector3(x, h / 2, z), new THREE.Quaternion(), new THREE.Vector3(w, h, d)));
-      lamps.push(new THREE.Matrix4().compose(new THREE.Vector3(x, h + 0.3, z), new THREE.Quaternion(), new THREE.Vector3(w * 0.6, 0.25, 0.25)));
+      towers.push(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(x, h / 2, z),
+          new THREE.Quaternion(),
+          new THREE.Vector3(w, h, d),
+        ),
+      );
+      lamps.push(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(x, h + 0.3, z),
+          new THREE.Quaternion(),
+          new THREE.Vector3(w * 0.6, 0.25, 0.25),
+        ),
+      );
     };
     for (let z = B.minZ; z <= B.maxZ; z += 22) {
       add(B.minX - 14 - rng() * 10, z + rng() * 8);
@@ -122,10 +169,22 @@ function Surroundings({ seed, mats }: { seed: number; mats: ReturnType<typeof us
     for (let x = B.minX; x <= B.maxX; x += 24) add(x + rng() * 8, B.minZ - 16 - rng() * 10);
     const trusses: THREE.Matrix4[] = [];
     for (let z = B.minZ + 8; z < B.maxZ; z += 16) {
-      trusses.push(new THREE.Matrix4().compose(new THREE.Vector3(CENTER_X, B.ceilingY + 0.6, z), new THREE.Quaternion(), new THREE.Vector3(SIZE_X, 0.6, 0.5)));
+      trusses.push(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(CENTER_X, B.ceilingY + 0.6, z),
+          new THREE.Quaternion(),
+          new THREE.Vector3(SIZE_X, 0.6, 0.5),
+        ),
+      );
     }
     for (let x = B.minX + 15; x < B.maxX; x += 30) {
-      trusses.push(new THREE.Matrix4().compose(new THREE.Vector3(x, B.ceilingY + 0.9, CENTER_Z), new THREE.Quaternion(), new THREE.Vector3(0.5, 0.6, SIZE_Z)));
+      trusses.push(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(x, B.ceilingY + 0.9, CENTER_Z),
+          new THREE.Quaternion(),
+          new THREE.Vector3(0.5, 0.6, SIZE_Z),
+        ),
+      );
     }
     return { towers, lamps, trusses };
   }, [seed]);
@@ -163,7 +222,9 @@ function Pillar({ o, mats }: { o: CylinderObstacle; mats: ReturnType<typeof useA
       </mesh>
       {[0.3, 0.62].map((f) => (
         <mesh key={f} position={[0, h * f, 0]} material={mast ? mats.bandAmber : mats.bandCyan}>
-          <cylinderGeometry args={[o.radius + 0.03, o.radius + 0.03, 0.18, mast ? 12 : 24, 1, true]} />
+          <cylinderGeometry
+            args={[o.radius + 0.03, o.radius + 0.03, 0.18, mast ? 12 : 24, 1, true]}
+          />
         </mesh>
       ))}
       {mast && (
@@ -177,7 +238,13 @@ function Pillar({ o, mats }: { o: CylinderObstacle; mats: ReturnType<typeof useA
 
 function Block({ o, mats }: { o: BoxObstacle; mats: ReturnType<typeof useArenaMaterials> }) {
   const size: [number, number, number] = [o.half.x * 2, o.half.y * 2, o.half.z * 2];
-  const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(...size)), [size[0], size[1], size[2]]); // eslint-disable-line react-hooks/exhaustive-deps
+  const half = o.half;
+  const edges = useMemo(() => {
+    const box = new THREE.BoxGeometry(half.x * 2, half.y * 2, half.z * 2);
+    const e = new THREE.EdgesGeometry(box);
+    box.dispose();
+    return e;
+  }, [half]);
   useEffect(() => () => edges.dispose(), [edges]);
   return (
     <group position={[o.center.x, o.center.y, o.center.z]} rotation={[0, o.yaw, 0]}>
@@ -196,7 +263,11 @@ function Block({ o, mats }: { o: BoxObstacle; mats: ReturnType<typeof useArenaMa
 
 export type GateState = "cleared" | "next" | "pending";
 
-const GATE_COLORS: Record<GateState, string> = { cleared: "#3df2a5", next: "#4fe3fb", pending: "#ff9f1c" };
+const GATE_COLORS: Record<GateState, string> = {
+  cleared: "#3df2a5",
+  next: "#4fe3fb",
+  pending: "#ff9f1c",
+};
 
 function GateMesh({
   gate,
@@ -213,13 +284,22 @@ function GateMesh({
   const hw = gate.halfWidth;
   const hh = gate.halfHeight;
   const local = useMemo(() => {
-    const strip = new THREE.MeshStandardMaterial({ color: "#000", emissive: "#fff", emissiveIntensity: 2, toneMapped: false });
+    const strip = new THREE.MeshStandardMaterial({
+      color: "#000",
+      emissive: "#fff",
+      emissiveIntensity: 2,
+      toneMapped: false,
+    });
     const membrane = new THREE.ShaderMaterial({
       transparent: true,
       depthWrite: false,
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending,
-      uniforms: { uColor: { value: new THREE.Color("#fff") }, uTime: { value: 0 }, uStrength: { value: 1 } },
+      uniforms: {
+        uColor: { value: new THREE.Color("#fff") },
+        uTime: { value: 0 },
+        uStrength: { value: 1 },
+      },
       vertexShader: /* glsl */ `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
       fragmentShader: /* glsl */ `
         uniform vec3 uColor; uniform float uTime; uniform float uStrength; varying vec2 vUv;
@@ -232,7 +312,10 @@ function GateMesh({
         }
       `,
     });
-    const number = new THREE.MeshBasicMaterial({ map: gateNumberTexture(gate.number), toneMapped: false });
+    const number = new THREE.MeshBasicMaterial({
+      map: gateNumberTexture(gate.number),
+      toneMapped: false,
+    });
     return { strip, membrane, number };
   }, [gate.number]);
   useEffect(
@@ -248,7 +331,8 @@ function GateMesh({
     local.strip.emissive.copy(c);
     local.strip.emissiveIntensity = state === "pending" ? 0.9 : 2.2;
     local.membrane.uniforms.uColor.value.copy(c);
-    local.membrane.uniforms.uStrength.value = state === "next" ? 1 : state === "cleared" ? 0.35 : 0.3;
+    local.membrane.uniforms.uStrength.value =
+      state === "next" ? 1 : state === "cleared" ? 0.35 : 0.3;
     local.number.color.set(state === "pending" ? "#ffcf8a" : GATE_COLORS[state]);
   }, [state, local]);
   useFrame((s, delta) => {
@@ -261,12 +345,22 @@ function GateMesh({
     <group position={[gate.center.x, gate.center.y, gate.center.z]} rotation={[0, gate.yaw, 0]}>
       {/* Frame: same boxes as the collision volumes */}
       {[-1, 1].map((s) => (
-        <mesh key={`post${s}`} position={[s * (hw + t / 2), 0, 0]} material={mats.gateFrame} castShadow>
+        <mesh
+          key={`post${s}`}
+          position={[s * (hw + t / 2), 0, 0]}
+          material={mats.gateFrame}
+          castShadow
+        >
           <boxGeometry args={[t, hh * 2 + t * 2, t]} />
         </mesh>
       ))}
       {[-1, 1].map((s) => (
-        <mesh key={`bar${s}`} position={[0, s * (hh + t / 2), 0]} material={mats.gateFrame} castShadow>
+        <mesh
+          key={`bar${s}`}
+          position={[0, s * (hh + t / 2), 0]}
+          material={mats.gateFrame}
+          castShadow
+        >
           <boxGeometry args={[hw * 2, t, t]} />
         </mesh>
       ))}
@@ -289,7 +383,11 @@ function GateMesh({
       {[-1, 1].map((s) => {
         const legH = gate.center.y - hh - t;
         return legH > 0.2 ? (
-          <mesh key={`leg${s}`} position={[s * (hw + t / 2), -hh - t - legH / 2, 0]} material={mats.pillar}>
+          <mesh
+            key={`leg${s}`}
+            position={[s * (hw + t / 2), -hh - t - legH / 2, 0]}
+            material={mats.pillar}
+          >
             <boxGeometry args={[0.22, legH, 0.22]} />
           </mesh>
         ) : null;
@@ -304,7 +402,11 @@ function GateMesh({
       <mesh position={[0, hh + t + 0.75, 0]} material={mats.gateFrame}>
         <boxGeometry args={[1.45, 1.45, t * 0.8]} />
       </mesh>
-      <mesh position={[0, hh + t + 0.75, -t / 2 - 0.02]} rotation={[0, Math.PI, 0]} material={local.number}>
+      <mesh
+        position={[0, hh + t + 0.75, -t / 2 - 0.02]}
+        rotation={[0, Math.PI, 0]}
+        material={local.number}
+      >
         <planeGeometry args={[1.3, 1.3]} />
       </mesh>
     </group>
@@ -392,7 +494,8 @@ function FlightPath({ nextGate, frozen }: { nextGate: number; frozen: boolean })
   );
   useEffect(() => {
     material.uniforms.uDone.value = segments[Math.min(nextGate, segments.length - 1)];
-    material.uniforms.uNext.value = segments[Math.min(nextGate + 1, segments.length - 1)] + (nextGate >= 5 ? 1 : 0);
+    material.uniforms.uNext.value =
+      segments[Math.min(nextGate + 1, segments.length - 1)] + (nextGate >= 5 ? 1 : 0);
   }, [nextGate, material, segments]);
   useFrame((s, delta) => {
     material.uniforms.uTime.value = frameTime(s.clock.elapsedTime, delta, frozen).t;
@@ -416,12 +519,28 @@ function StartPad({ mats }: { mats: ReturnType<typeof useArenaMaterials> }) {
   );
 }
 
-export function Arena({ nextGate, frozen, seed }: { nextGate: number; frozen: boolean; seed: number }) {
+export function Arena({
+  nextGate,
+  frozen,
+  seed,
+}: {
+  nextGate: number;
+  frozen: boolean;
+  seed: number;
+}) {
   const mats = useArenaMaterials();
-  const course = useMemo(() => ARENA.obstacles.filter((o) => o.kind === "cylinder" || o.role !== "gate-frame"), []);
+  const course = useMemo(
+    () => ARENA.obstacles.filter((o) => o.kind === "cylinder" || o.role !== "gate-frame"),
+    [],
+  );
   return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[CENTER_X, 0, CENTER_Z]} material={mats.floor} receiveShadow>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[CENTER_X, 0, CENTER_Z]}
+        material={mats.floor}
+        receiveShadow
+      >
         <planeGeometry args={[SIZE_X, SIZE_Z]} />
       </mesh>
       {/* Outer apron beyond the field */}
@@ -433,7 +552,11 @@ export function Arena({ nextGate, frozen, seed }: { nextGate: number; frozen: bo
       <Surroundings seed={seed} mats={mats} />
       <StartPad mats={mats} />
       {course.map((o) =>
-        o.kind === "cylinder" ? <Pillar key={o.id} o={o} mats={mats} /> : <Block key={o.id} o={o} mats={mats} />,
+        o.kind === "cylinder" ? (
+          <Pillar key={o.id} o={o} mats={mats} />
+        ) : (
+          <Block key={o.id} o={o} mats={mats} />
+        ),
       )}
       {ARENA.gates.map((g, i) => (
         <GateMesh

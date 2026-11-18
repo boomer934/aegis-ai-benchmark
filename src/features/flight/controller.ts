@@ -117,7 +117,9 @@ export class FlightController {
     this.alpha = alpha;
     const events = this.world.events.splice(0, this.world.events.length);
     this.publishClock += delta;
-    const statusEvent = events.some((e) => e.type !== "collision" && e.type !== "wrong-gate" && e.type !== "checkpoint");
+    const statusEvent = events.some(
+      (e) => e.type !== "collision" && e.type !== "wrong-gate" && e.type !== "checkpoint",
+    );
     if (this.publishClock >= 1 / 12 || events.length > 0 || statusEvent) {
       this.publishClock = 0;
       this.publish(statusEvent, events);
@@ -158,9 +160,20 @@ export class FlightController {
       patch.telemetry = m.telemetry.slice();
     }
     for (const e of events) {
-      if (e.type === "checkpoint") patch.flash = { kind: "checkpoint", label: `Gate ${e.gate} cleared`, at: performance.now() };
-      else if (e.type === "collision") patch.flash = { kind: "collision", label: "Collision −250", at: performance.now() };
-      else if (e.type === "wrong-gate") patch.flash = { kind: "wrong-gate", label: `Gate ${e.gate} out of order`, at: performance.now() };
+      if (e.type === "checkpoint")
+        patch.flash = {
+          kind: "checkpoint",
+          label: `Gate ${e.gate} cleared`,
+          at: performance.now(),
+        };
+      else if (e.type === "collision")
+        patch.flash = { kind: "collision", label: "Collision −250", at: performance.now() };
+      else if (e.type === "wrong-gate")
+        patch.flash = {
+          kind: "wrong-gate",
+          label: `Gate ${e.gate} out of order`,
+          at: performance.now(),
+        };
     }
     flightStore.set(patch);
   }

@@ -12,22 +12,43 @@ import { createRng, deriveSeed } from "@/sim/rng";
 function useMachineMaterials() {
   const mats = useMemo(
     () => ({
-      paintedOrange: new THREE.MeshStandardMaterial({ color: "#c96a12", metalness: 0.5, roughness: 0.45 }),
+      paintedOrange: new THREE.MeshStandardMaterial({
+        color: "#c96a12",
+        metalness: 0.5,
+        roughness: 0.45,
+      }),
       steel: new THREE.MeshStandardMaterial({ color: "#3a434d", metalness: 0.85, roughness: 0.35 }),
       dark: new THREE.MeshStandardMaterial({ color: "#14191f", metalness: 0.6, roughness: 0.5 }),
       chrome: new THREE.MeshStandardMaterial({ color: "#c4ccd4", metalness: 1, roughness: 0.18 }),
       rack: new THREE.MeshStandardMaterial({ color: "#0d1116", metalness: 0.5, roughness: 0.6 }),
       crate: new THREE.MeshStandardMaterial({ color: "#2b3138", metalness: 0.3, roughness: 0.7 }),
-      crateHazard: new THREE.MeshStandardMaterial({ map: hazardTexture(), metalness: 0.2, roughness: 0.6 }),
+      crateHazard: new THREE.MeshStandardMaterial({
+        map: hazardTexture(),
+        metalness: 0.2,
+        roughness: 0.6,
+      }),
       gas: new THREE.MeshStandardMaterial({ color: "#5b6670", metalness: 0.7, roughness: 0.3 }),
-      gasBand: new THREE.MeshStandardMaterial({ color: "#ff9f1c", emissive: "#ff7a00", emissiveIntensity: 0.6 }),
+      gasBand: new THREE.MeshStandardMaterial({
+        color: "#ff9f1c",
+        emissive: "#ff7a00",
+        emissiveIntensity: 0.6,
+      }),
       led: new THREE.MeshBasicMaterial({ toneMapped: false }),
       screenA: new THREE.MeshBasicMaterial({
-        map: holoLabelTexture("ws-a", ["TELEMETRY LINK", "CH 07  ▮▮▮▮▮▯", "LATENCY 4 ms", "PACKET LOSS 0.00%"]),
+        map: holoLabelTexture("ws-a", [
+          "TELEMETRY LINK",
+          "CH 07  ▮▮▮▮▮▯",
+          "LATENCY 4 ms",
+          "PACKET LOSS 0.00%",
+        ]),
         toneMapped: false,
       }),
       screenB: new THREE.MeshBasicMaterial({
-        map: holoLabelTexture("ws-b", ["ROTOR BALANCE", "M1 0.02g  M2 0.03g", "M3 0.02g  M4 0.01g", "STATUS NOMINAL"], "#ffbe4d"),
+        map: holoLabelTexture(
+          "ws-b",
+          ["ROTOR BALANCE", "M1 0.02g  M2 0.03g", "M3 0.02g  M4 0.01g", "STATUS NOMINAL"],
+          "#ffbe4d",
+        ),
         toneMapped: false,
       }),
     }),
@@ -37,7 +58,13 @@ function useMachineMaterials() {
   return mats;
 }
 
-function RobotArm({ frozen, mats }: { frozen: boolean; mats: ReturnType<typeof useMachineMaterials> }) {
+function RobotArm({
+  frozen,
+  mats,
+}: {
+  frozen: boolean;
+  mats: ReturnType<typeof useMachineMaterials>;
+}) {
   const turret = useRef<THREE.Group>(null);
   const shoulder = useRef<THREE.Group>(null);
   const elbow = useRef<THREE.Group>(null);
@@ -87,7 +114,13 @@ function RobotArm({ frozen, mats }: { frozen: boolean; mats: ReturnType<typeof u
   );
 }
 
-function GantryCrane({ frozen, mats }: { frozen: boolean; mats: ReturnType<typeof useMachineMaterials> }) {
+function GantryCrane({
+  frozen,
+  mats,
+}: {
+  frozen: boolean;
+  mats: ReturnType<typeof useMachineMaterials>;
+}) {
   const bridge = useRef<THREE.Group>(null);
   const trolley = useRef<THREE.Group>(null);
   useFrame((state, delta) => {
@@ -125,7 +158,13 @@ function GantryCrane({ frozen, mats }: { frozen: boolean; mats: ReturnType<typeo
   );
 }
 
-function ServerRacks({ seed, mats }: { seed: number; mats: ReturnType<typeof useMachineMaterials> }) {
+function ServerRacks({
+  seed,
+  mats,
+}: {
+  seed: number;
+  mats: ReturnType<typeof useMachineMaterials>;
+}) {
   const leds = useRef<THREE.InstancedMesh>(null);
   const ledData = useMemo(() => {
     const rng = createRng(deriveSeed(seed, "rack-leds"));
@@ -137,7 +176,9 @@ function ServerRacks({ seed, mats }: { seed: number; mats: ReturnType<typeof use
           if (rng() < 0.35) continue;
           out.push({
             p: new THREE.Vector3(r * 1.1 - 1.65 + (col - 1.5) * 0.14, 0.5 + row * 0.16, 0.36),
-            c: new THREE.Color(palette[Math.floor(rng() * palette.length)]).multiplyScalar(0.6 + rng() * 1.4),
+            c: new THREE.Color(palette[Math.floor(rng() * palette.length)]).multiplyScalar(
+              0.6 + rng() * 1.4,
+            ),
           });
         }
       }
@@ -160,7 +201,13 @@ function ServerRacks({ seed, mats }: { seed: number; mats: ReturnType<typeof use
   return (
     <group position={[-13.8, 0, 6.5]} rotation={[0, Math.PI / 2, 0]}>
       {Array.from({ length: 4 }, (_, r) => (
-        <mesh key={r} position={[r * 1.1 - 1.65, 1.3, 0]} material={mats.rack} castShadow receiveShadow>
+        <mesh
+          key={r}
+          position={[r * 1.1 - 1.65, 1.3, 0]}
+          material={mats.rack}
+          castShadow
+          receiveShadow
+        >
           <boxGeometry args={[1, 2.6, 0.7]} />
         </mesh>
       ))}
@@ -172,7 +219,12 @@ function ServerRacks({ seed, mats }: { seed: number; mats: ReturnType<typeof use
 function Storage({ seed, mats }: { seed: number; mats: ReturnType<typeof useMachineMaterials> }) {
   const crates = useMemo(() => {
     const rng = createRng(deriveSeed(seed, "crates"));
-    const out: { p: [number, number, number]; s: [number, number, number]; r: number; hazard: boolean }[] = [];
+    const out: {
+      p: [number, number, number];
+      s: [number, number, number];
+      r: number;
+      hazard: boolean;
+    }[] = [];
     const stacks: [number, number][] = [
       [10.5, -8],
       [12.2, -6.2],
@@ -185,7 +237,12 @@ function Storage({ seed, mats }: { seed: number; mats: ReturnType<typeof useMach
       for (let l = 0; l < levels; l++) {
         const w = 1.1 + rng() * 0.6;
         const h = 0.6 + rng() * 0.5;
-        out.push({ p: [x + (rng() - 0.5) * 0.2, y + h / 2, z + (rng() - 0.5) * 0.2], s: [w, h, w * 0.8], r: (rng() - 0.5) * 0.3, hazard: rng() > 0.6 });
+        out.push({
+          p: [x + (rng() - 0.5) * 0.2, y + h / 2, z + (rng() - 0.5) * 0.2],
+          s: [w, h, w * 0.8],
+          r: (rng() - 0.5) * 0.3,
+          hazard: rng() > 0.6,
+        });
         y += h;
       }
     }
@@ -243,7 +300,11 @@ function Workstation({ mats }: { mats: ReturnType<typeof useMachineMaterials> })
         [-0.65, mats.screenA],
         [0.65, mats.screenB],
       ].map(([x, mat], i) => (
-        <group key={i} position={[x as number, 1.45, -0.25]} rotation={[-0.08, i === 0 ? 0.18 : -0.18, 0]}>
+        <group
+          key={i}
+          position={[x as number, 1.45, -0.25]}
+          rotation={[-0.08, i === 0 ? 0.18 : -0.18, 0]}
+        >
           <mesh material={mats.dark} castShadow>
             <boxGeometry args={[1.15, 0.7, 0.05]} />
           </mesh>

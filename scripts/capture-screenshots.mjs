@@ -17,11 +17,37 @@ const DESKTOP = { width: 1440, height: 900 };
 const MOBILE = { width: 390, height: 844 };
 
 const shots = [
-  { file: "01-hangar-hero-desktop.png", path: "/?benchmark=1&seed=42&scene=hangar&camera=hero", viewport: DESKTOP, ready: "hangar" },
-  { file: "02-hangar-top-desktop.png", path: "/?benchmark=1&seed=42&scene=hangar&camera=top", viewport: DESKTOP, ready: "hangar" },
-  { file: "03-flight-desktop.png", path: "/?benchmark=1&seed=42&scene=flight&camera=chase", viewport: DESKTOP, ready: "flight" },
-  { file: "04-telemetry-desktop.png", path: "/?benchmark=1&seed=42&scene=telemetry", viewport: DESKTOP, ready: "telemetry" },
-  { file: "05-hangar-mobile.png", path: "/?benchmark=1&seed=42&scene=hangar&camera=hero", viewport: MOBILE, ready: "hangar", mobile: true },
+  {
+    file: "01-hangar-hero-desktop.png",
+    path: "/?benchmark=1&seed=42&scene=hangar&camera=hero",
+    viewport: DESKTOP,
+    ready: "hangar",
+  },
+  {
+    file: "02-hangar-top-desktop.png",
+    path: "/?benchmark=1&seed=42&scene=hangar&camera=top",
+    viewport: DESKTOP,
+    ready: "hangar",
+  },
+  {
+    file: "03-flight-desktop.png",
+    path: "/?benchmark=1&seed=42&scene=flight&camera=chase",
+    viewport: DESKTOP,
+    ready: "flight",
+  },
+  {
+    file: "04-telemetry-desktop.png",
+    path: "/?benchmark=1&seed=42&scene=telemetry",
+    viewport: DESKTOP,
+    ready: "telemetry",
+  },
+  {
+    file: "05-hangar-mobile.png",
+    path: "/?benchmark=1&seed=42&scene=hangar&camera=hero",
+    viewport: MOBILE,
+    ready: "hangar",
+    mobile: true,
+  },
 ];
 
 const browser = await chromium.launch({
@@ -40,7 +66,11 @@ for (const s of shots) {
   const page = await context.newPage();
   page.on("pageerror", (e) => errors.push(`${s.file}: ${e.message}`));
   await page.goto(baseURL + s.path, { waitUntil: "networkidle" });
-  await page.waitForFunction((name) => document.documentElement.dataset.sceneReady === name, s.ready, { timeout: 90_000 });
+  await page.waitForFunction(
+    (name) => document.documentElement.dataset.sceneReady === name,
+    s.ready,
+    { timeout: 90_000 },
+  );
   // Let late layout (fonts, data) settle; scene time is frozen in benchmark mode.
   await page.waitForTimeout(800);
   await page.screenshot({ path: join(outDir, s.file) });

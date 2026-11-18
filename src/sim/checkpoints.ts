@@ -39,7 +39,8 @@ export function evaluateGateCrossing(
     return { kind: "checkpoint", gateIndex: nextGate };
   }
   for (let i = 0; i < gates.length; i++) {
-    if (i !== nextGate && segmentCrossesGate(gates[i], a, b)) return { kind: "wrong-gate", gateIndex: i };
+    if (i !== nextGate && segmentCrossesGate(gates[i], a, b))
+      return { kind: "wrong-gate", gateIndex: i };
   }
   return { kind: "none" };
 }

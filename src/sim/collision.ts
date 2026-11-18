@@ -77,7 +77,14 @@ function sphereVsCylinder(p: Readonly<Vec3>, r: number, cyl: CylinderObstacle): 
 
   // Top cap contact when above the cylinder.
   if (p.y > cyl.maxY && radial < cyl.radius) {
-    return { nx: 0, ny: 1, nz: 0, depth: cyl.maxY + r - p.y, surface: "obstacle", obstacleId: cyl.id };
+    return {
+      nx: 0,
+      ny: 1,
+      nz: 0,
+      depth: cyl.maxY + r - p.y,
+      surface: "obstacle",
+      obstacleId: cyl.id,
+    };
   }
   const inv = radial > 1e-9 ? 1 / radial : 0;
   return {
@@ -109,11 +116,14 @@ export function findContacts(
   if (p.y < b.floorY + restHeight) {
     out.push({ nx: 0, ny: 1, nz: 0, depth: b.floorY + restHeight - p.y, surface: "floor" });
   }
-  if (p.y > b.ceilingY - r) out.push({ nx: 0, ny: -1, nz: 0, depth: p.y - (b.ceilingY - r), surface: "ceiling" });
+  if (p.y > b.ceilingY - r)
+    out.push({ nx: 0, ny: -1, nz: 0, depth: p.y - (b.ceilingY - r), surface: "ceiling" });
   if (p.x < b.minX + r) out.push({ nx: 1, ny: 0, nz: 0, depth: b.minX + r - p.x, surface: "wall" });
-  if (p.x > b.maxX - r) out.push({ nx: -1, ny: 0, nz: 0, depth: p.x - (b.maxX - r), surface: "wall" });
+  if (p.x > b.maxX - r)
+    out.push({ nx: -1, ny: 0, nz: 0, depth: p.x - (b.maxX - r), surface: "wall" });
   if (p.z < b.minZ + r) out.push({ nx: 0, ny: 0, nz: 1, depth: b.minZ + r - p.z, surface: "wall" });
-  if (p.z > b.maxZ - r) out.push({ nx: 0, ny: 0, nz: -1, depth: p.z - (b.maxZ - r), surface: "wall" });
+  if (p.z > b.maxZ - r)
+    out.push({ nx: 0, ny: 0, nz: -1, depth: p.z - (b.maxZ - r), surface: "wall" });
   for (const o of arena.obstacles) {
     const c = sphereVsObstacle(p, r, o);
     if (c) out.push(c);

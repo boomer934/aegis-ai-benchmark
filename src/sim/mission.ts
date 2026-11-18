@@ -1,7 +1,13 @@
 import { ARENA, DRONE_RADIUS, DRONE_REST_HEIGHT, type ArenaDefinition } from "./arena";
 import { evaluateGateCrossing } from "./checkpoints";
 import { findContacts } from "./collision";
-import { createDroneState, NEUTRAL_INPUT, stepDrone, type DroneState, type FlightInput } from "./physics";
+import {
+  createDroneState,
+  NEUTRAL_INPUT,
+  stepDrone,
+  type DroneState,
+  type FlightInput,
+} from "./physics";
 import { ENGINE_PROFILES, type EngineId, type EngineProfile } from "./profiles";
 import { CHECKPOINT_COUNT, computeScore, COUNTDOWN_S, MISSION_TIME_LIMIT_S } from "./scoring";
 import { SIM_DT } from "./stepper";
@@ -94,7 +100,11 @@ function createMissionState(): MissionState {
   };
 }
 
-export function createWorld(engine: EngineId = "SPORT", arena: ArenaDefinition = ARENA, dt = SIM_DT): World {
+export function createWorld(
+  engine: EngineId = "SPORT",
+  arena: ArenaDefinition = ARENA,
+  dt = SIM_DT,
+): World {
   return {
     arena,
     profile: ENGINE_PROFILES[engine],
@@ -161,7 +171,9 @@ export function togglePause(w: World): boolean {
 }
 
 export const isMissionActive = (w: World): boolean =>
-  w.mission.status === "countdown" || w.mission.status === "running" || w.mission.status === "paused";
+  w.mission.status === "countdown" ||
+  w.mission.status === "running" ||
+  w.mission.status === "paused";
 
 function resolveCollisions(w: World): void {
   const d = w.drone;
@@ -189,7 +201,11 @@ function resolveCollisions(w: World): void {
     }
     const threshold = c.surface === "floor" ? FLOOR_MIN_IMPACT : COLLISION_MIN_IMPACT;
     const cooldownTicks = COLLISION_COOLDOWN_S / w.dt;
-    if (m.status === "running" && impact >= threshold && m.ticks - m.lastCollisionTick >= cooldownTicks) {
+    if (
+      m.status === "running" &&
+      impact >= threshold &&
+      m.ticks - m.lastCollisionTick >= cooldownTicks
+    ) {
       m.collisions++;
       m.lastCollisionTick = m.ticks;
       // Visible jolt on the airframe.
@@ -233,7 +249,12 @@ function finishMission(w: World, outcome: "success" | "failed"): void {
     outcome,
     engine: w.profile.id,
     durationMs,
-    score: computeScore({ checkpoints: m.nextGate, collisions: m.collisions, durationMs, success: outcome === "success" }),
+    score: computeScore({
+      checkpoints: m.nextGate,
+      collisions: m.collisions,
+      durationMs,
+      success: outcome === "success",
+    }),
     checkpoints: m.nextGate,
     collisions: m.collisions,
     maxSpeed: round(m.maxSpeed, 2),
@@ -242,7 +263,9 @@ function finishMission(w: World, outcome: "success" | "failed"): void {
     splitsMs: [...m.splitsMs],
     telemetry: downsample(m.telemetry, MAX_TRACE_POINTS),
   };
-  w.events.push(outcome === "success" ? { type: "success" } : { type: "failed", reason: "timeout" });
+  w.events.push(
+    outcome === "success" ? { type: "success" } : { type: "failed", reason: "timeout" },
+  );
 }
 
 /**

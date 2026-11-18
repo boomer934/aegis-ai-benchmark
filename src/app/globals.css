@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Bahnschrift", "DIN Alternate", "DIN 2014", "Barlow", "Segoe UI", system-ui, sans-serif;
-  --font-sans: "Segoe UI Variable Text", "Segoe UI", "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-mono: "Cascadia Mono", "JetBrains Mono", "SFMono-Regular", "Consolas", ui-monospace, monospace;
+  --font-display:
+    "Bahnschrift", "DIN Alternate", "DIN 2014", "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-sans:
+    "Segoe UI Variable Text", "Segoe UI", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono:
+    "Cascadia Mono", "JetBrains Mono", "SFMono-Regular", "Consolas", ui-monospace, monospace;
 
   --color-void: #05070a;
   --color-graphite-950: #080b0f;
@@ -144,7 +147,11 @@ body {
   }
 
   .scanlines {
-    background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px);
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgb(255 255 255 / 0.025) 0 1px,
+      transparent 1px 3px
+    );
   }
 }
 

@@ -48,7 +48,13 @@ let cache: { seed: number; missions: MissionDetail[] } | null = null;
 export function demoMissions(seed: number): MissionDetail[] {
   if (cache?.seed === seed) return cache.missions;
   const rng = createRng(deriveSeed(seed, "demo-missions"));
-  const plan: { engine: EngineId; cruise: number; timeout: boolean; callsign: string; paint: MissionDetail["paint"] }[] = [
+  const plan: {
+    engine: EngineId;
+    cruise: number;
+    timeout: boolean;
+    callsign: string;
+    paint: MissionDetail["paint"];
+  }[] = [
     { engine: "RACE", cruise: 0.9, timeout: false, callsign: "DEMO-VIPER", paint: "vanta" },
     { engine: "SPORT", cruise: 0.95, timeout: false, callsign: "DEMO-KESTREL", paint: "graphite" },
     { engine: "ECO", cruise: 1, timeout: false, callsign: "DEMO-ARCTIC", paint: "arctic" },

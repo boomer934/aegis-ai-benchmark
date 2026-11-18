@@ -70,5 +70,6 @@ export const initialFlight: FlightSnapshot = {
 export const flightStore = createStore<FlightSnapshot>(initialFlight);
 export const saveStore = createStore<{ save: SaveState }>({ save: { kind: "idle" } });
 
-export const useFlight = <S>(selector: (s: FlightSnapshot) => S): S => useStore(flightStore, selector, initialFlight);
+export const useFlight = <S>(selector: (s: FlightSnapshot) => S): S =>
+  useStore(flightStore, selector, initialFlight);
 export const useSaveState = (): SaveState => useStore(saveStore, (s) => s.save);

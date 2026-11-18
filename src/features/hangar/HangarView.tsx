@@ -18,12 +18,21 @@ const HangarCanvas = dynamic(() => import("./HangarCanvas"), {
   loading: () => <SceneLoader label="Loading hangar" />,
 });
 
-const MAX = { speed: ENGINE_PROFILES.RACE.maxSpeed, accel: ENGINE_PROFILES.RACE.accel, drain: ENGINE_PROFILES.RACE.throttleDrain };
+const MAX = {
+  speed: ENGINE_PROFILES.RACE.maxSpeed,
+  accel: ENGINE_PROFILES.RACE.accel,
+  drain: ENGINE_PROFILES.RACE.throttleDrain,
+};
 
 function PaintSwatches() {
   const paint = useConfig((s) => s.paint);
   return (
-    <div role="radiogroup" aria-label="Paint configuration" className="grid grid-cols-3 gap-2" data-testid="paint-selector">
+    <div
+      role="radiogroup"
+      aria-label="Paint configuration"
+      className="grid grid-cols-3 gap-2"
+      data-testid="paint-selector"
+    >
       {PAINT_IDS.map((id: PaintId) => {
         const p = PAINTS[id];
         const active = paint === id;
@@ -36,12 +45,22 @@ function PaintSwatches() {
             data-value={id}
             onClick={() => configStore.set({ paint: id })}
             className={`group flex flex-col items-start gap-2 border p-2 text-left transition-colors ${
-              active ? "border-ion-400 bg-ion-400/10" : "border-graphite-600 bg-graphite-900/60 hover:border-ion-500/60"
+              active
+                ? "border-ion-400 bg-ion-400/10"
+                : "border-graphite-600 bg-graphite-900/60 hover:border-ion-500/60"
             }`}
           >
             <span className="relative block h-7 w-full overflow-hidden" aria-hidden="true">
-              <span className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${p.hull} 0 58%, ${p.frame} 58% 100%)` }} />
-              <span className="absolute bottom-1 left-1 right-1 h-[3px]" style={{ background: p.accent, boxShadow: `0 0 8px ${p.accent}` }} />
+              <span
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(135deg, ${p.hull} 0 58%, ${p.frame} 58% 100%)`,
+                }}
+              />
+              <span
+                className="absolute bottom-1 left-1 right-1 h-[3px]"
+                style={{ background: p.accent, boxShadow: `0 0 8px ${p.accent}` }}
+              />
             </span>
             <span className="font-[family-name:var(--font-display)] text-[11px] uppercase leading-tight tracking-[0.12em] text-steel-100">
               {p.name}
@@ -63,17 +82,30 @@ function EngineSection() {
         testId="engine-selector"
         value={engine}
         onChange={(v) => configStore.set({ engine: v })}
-        options={ENGINE_IDS.map((id) => ({ value: id, label: id, hint: ENGINE_PROFILES[id].tagline }))}
+        options={ENGINE_IDS.map((id) => ({
+          value: id,
+          label: id,
+          hint: ENGINE_PROFILES[id].tagline,
+        }))}
       />
       <div className="grid gap-1.5" data-testid="engine-stats">
         <StatBar label="Top speed" value={p.maxSpeed / MAX.speed} display={`${p.maxSpeed} m/s`} />
         <StatBar label="Thrust" value={p.accel / MAX.accel} display={`${p.accel} m/s²`} />
-        <StatBar label="Boost" value={(p.boostMultiplier - 1) / 0.5} display={`×${p.boostMultiplier}`} />
-        <StatBar label="Power draw" value={p.throttleDrain / MAX.drain} display={`${p.throttleDrain}%/s`} tone="amber" />
+        <StatBar
+          label="Boost"
+          value={(p.boostMultiplier - 1) / 0.5}
+          display={`×${p.boostMultiplier}`}
+        />
+        <StatBar
+          label="Power draw"
+          value={p.throttleDrain / MAX.drain}
+          display={`${p.throttleDrain}%/s`}
+          tone="amber"
+        />
       </div>
       <p className="text-[11px] leading-relaxed text-steel-400">
-        <span className="text-steel-200">{p.tagline}.</span> These values drive the flight model directly: acceleration, drag,
-        speed caps and energy drain.
+        <span className="text-steel-200">{p.tagline}.</span> These values drive the flight model
+        directly: acceleration, drag, speed caps and energy drain.
       </p>
     </div>
   );
@@ -84,22 +116,36 @@ function InspectionChecklist() {
   const progress = useHangar((s) => s.progress);
   if (!inspecting) return null;
   return (
-    <div className="panel pointer-events-auto w-[280px] p-4" data-testid="inspection-panel" aria-live="polite">
+    <div
+      className="panel pointer-events-auto w-[280px] p-4"
+      data-testid="inspection-panel"
+      aria-live="polite"
+    >
       <div className="flex items-center justify-between">
         <span className="label !text-ion-300">Inspection sequence</span>
         <span className="readout text-sm text-steel-100">{Math.round(progress * 100)}%</span>
       </div>
       <div className="mt-2 h-1 bg-graphite-700">
-        <div className="h-full bg-ion-400 transition-[width]" style={{ width: `${progress * 100}%` }} />
+        <div
+          className="h-full bg-ion-400 transition-[width]"
+          style={{ width: `${progress * 100}%` }}
+        />
       </div>
       <ul className="mt-3 grid gap-1.5">
         {INSPECTION_STEPS.map((s) => {
           const done = progress >= s.at;
           return (
             <li key={s.system} className="grid grid-cols-[14px_1fr] gap-2 text-[11px]">
-              <span aria-hidden="true" className={`mt-1 h-2 w-2 ${done ? "bg-signal-green shadow-[0_0_6px_#3df2a5]" : "border border-graphite-600"}`} />
+              <span
+                aria-hidden="true"
+                className={`mt-1 h-2 w-2 ${done ? "bg-signal-green shadow-[0_0_6px_#3df2a5]" : "border border-graphite-600"}`}
+              />
               <span>
-                <span className={`block uppercase tracking-[0.12em] ${done ? "text-steel-100" : "text-steel-400"}`}>{s.system}</span>
+                <span
+                  className={`block uppercase tracking-[0.12em] ${done ? "text-steel-100" : "text-steel-400"}`}
+                >
+                  {s.system}
+                </span>
                 {done && <span className="block text-steel-400">{s.detail}</span>}
               </span>
               <span className="sr-only">{done ? "passed" : "pending"}</span>
@@ -107,7 +153,11 @@ function InspectionChecklist() {
           );
         })}
       </ul>
-      {progress >= 1 && <div className="label mt-3 !text-signal-green">All systems nominal — cleared for flight</div>}
+      {progress >= 1 && (
+        <div className="label mt-3 !text-signal-green">
+          All systems nominal — cleared for flight
+        </div>
+      )}
     </div>
   );
 }
@@ -129,7 +179,10 @@ export function HangarView() {
 
   return (
     <div className="relative flex flex-1 flex-col lg:block">
-      <section aria-label="Hangar 3D view" className="relative h-[54dvh] min-h-[320px] shrink-0 overflow-hidden lg:absolute lg:inset-0 lg:h-auto">
+      <section
+        aria-label="Hangar 3D view"
+        className="relative h-[54dvh] min-h-[320px] shrink-0 overflow-hidden lg:absolute lg:inset-0 lg:h-auto"
+      >
         <HangarCanvas />
         <div
           aria-hidden="true"
@@ -159,7 +212,9 @@ export function HangarView() {
           <InspectionChecklist />
         </div>
         <div className="pointer-events-none absolute bottom-3 left-4 flex items-center gap-3 md:bottom-6 md:left-8">
-          <span className="label !text-[9px] text-steel-400">Drag to orbit · Scroll or pinch to zoom</span>
+          <span className="label !text-[9px] text-steel-400">
+            Drag to orbit · Scroll or pinch to zoom
+          </span>
         </div>
         {showPerf && !mode.benchmark && <PerfPanel />}
       </section>
@@ -212,7 +267,9 @@ export function HangarView() {
             }`}
           >
             <span>{inspecting ? "Stop inspection" : "Start inspection"}</span>
-            <span aria-hidden="true" className="font-mono text-[10px]">{inspecting ? "■" : "▶"}</span>
+            <span aria-hidden="true" className="font-mono text-[10px]">
+              {inspecting ? "■" : "▶"}
+            </span>
           </button>
           <div className="lg:hidden">
             <InspectionChecklist />
@@ -224,7 +281,9 @@ export function HangarView() {
           data-testid="cta-flight"
         >
           Proceed to flight test
-          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </Link>
       </aside>
     </div>
