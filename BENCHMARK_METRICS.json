@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "baseline": {
+    "branch": "benchmark/sol",
+    "commit": "8b14fb800825eb25bc77785184aecaf8022c5f82"
+  },
+  "environment": {
+    "os": "win32 10.0.26200",
+    "node": "v26.8.1",
+    "chromium": "159.0.8154.6",
+    "npm": "11.19.0",
+    "cpu": "AMD Ryzen 5 7600X",
+    "gpu": "NVIDIA GeForce RTX 5060"
+  },
+  "build": {
+    "success": true,
+    "command": "npm run build"
+  },
+  "unitTests": {
+    "passed": 21,
+    "failed": 0,
+    "inheritedSmokeTests": 2,
+    "command": "npm run test"
+  },
+  "browserTests": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "server": "production",
+    "engine": "Chromium",
+    "durationMs": 36584.293,
+    "additionalDevelopmentRun": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 63749.007000000005
+    }
+  },
+  "performance": {
+    "quality": "HIGH",
+    "canvasDpr": 1.5,
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "scenes": {
+      "hangar": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "scenario": "Hero, manual inspection",
+        "frames": 600,
+        "fpsMedian": 58.8235294117647,
+        "fpsP05": 55.55555555555556,
+        "frameAverage": 16.66566666672627,
+        "frameP95": 18,
+        "drawCalls": 140,
+        "triangles": 36030,
+        "dpr": 1.5
+      },
+      "flight": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "scenario": "Running trial, neutral input",
+        "frames": 600,
+        "fpsMedian": 59.17159750792064,
+        "fpsP05": 55.55555555555556,
+        "frameAverage": 16.66766666660706,
+        "frameP95": 18,
+        "drawCalls": 144,
+        "triangles": 35612,
+        "dpr": 1.5
+      }
+    },
+    "methodology": "Latest rolling window of up to 600 Three.js frame intervals, observed 12 seconds after warm-up or start of flight. Draw calls and triangles are the renderer's preceding-frame counts."
+  },
+  "javascriptBundle": {
+    "methodology": "Unique same-origin JavaScript resource entries in a fresh Chromium context per desktop presentation view, measured with Resource Timing.",
+    "views": {
+      "hangar&camera=hero": {
+        "chunks": 9,
+        "decodedBytes": 1540405,
+        "encodedBytes": 433921,
+        "transferredBytes": 436621
+      },
+      "hangar&camera=top": {
+        "chunks": 9,
+        "decodedBytes": 1540405,
+        "encodedBytes": 433921,
+        "transferredBytes": 436621
+      },
+      "flight&camera=chase": {
+        "chunks": 9,
+        "decodedBytes": 1452752,
+        "encodedBytes": 404164,
+        "transferredBytes": 406864
+      },
+      "telemetry": {
+        "chunks": 7,
+        "decodedBytes": 503761,
+        "encodedBytes": 150159,
+        "transferredBytes": 152259
+      }
+    }
+  },
+  "runtimeErrors": {
+    "failedNetworkRequests": 0,
+    "httpErrors": 0,
+    "externalHttpRequests": 0,
+    "uncaughtBrowserErrors": 0,
+    "consoleErrors": 0,
+    "scope": "Five captures, the repeated hero capture, and both live performance sessions."
+  },
+  "screenshots": [
+    {
+      "file": "artifacts/screenshots/01-hangar-hero-desktop.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "file": "artifacts/screenshots/02-hangar-top-desktop.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "file": "artifacts/screenshots/03-flight-desktop.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "file": "artifacts/screenshots/04-telemetry-desktop.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "file": "artifacts/screenshots/05-hangar-mobile.png",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "heroRepeatIdentical": true,
+  "knownIncompleteRequirements": [],
+  "limitations": [
+    "Mobile verification used Chromium touch and viewport emulation.",
+    "Performance was sampled on one machine.",
+    "The local leaderboard trusts validated client submissions."
+  ],
+  "usage": {
+    "goalTrackerTokensAtMeasurement": 265558,
+    "goalTrackerWallSecondsAtMeasurement": 2479,
+    "billedCostUsd": null,
+    "reason": "Codex exposed an aggregate goal counter during verification. Provider billing and a token breakdown were unavailable."
+  }
+}

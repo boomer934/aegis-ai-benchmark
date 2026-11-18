@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   // AI coding agent. Detection differs between agent CLIs, so it is disabled
   // to give every benchmarked agent the same starting repository.
   agentRules: false,
+  devIndicators: false,
 };
 
 export default nextConfig;

@@ -1,7 +1,3 @@
-// Prisma schema for the AEGIS benchmark starter.
-// It intentionally contains no models: the application data model is designed
-// independently by each evaluated agent.
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -9,4 +5,22 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+}
+
+model Mission {
+  id          String   @id
+  profile     String
+  paint       String
+  lights      Boolean
+  outcome     String
+  durationMs  Int
+  checkpoints Int
+  collisions  Int
+  score       Int
+  energy      Float
+  samples     Json
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([outcome, score, durationMs])
 }

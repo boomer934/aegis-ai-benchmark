@@ -1,8 +1,16 @@
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-3 p-8 text-center">
-      <h1 className="text-3xl font-semibold">AEGIS — Benchmark Starter</h1>
-      <p className="text-neutral-600">Ready for AI agent evaluation.</p>
-    </main>
-  );
+import { Simulator, type Options } from "@/components/ui/simulator";
+
+type Search = Record<string, string | string[] | undefined>;
+
+export default async function Page({ searchParams }: { searchParams: Promise<Search> }) {
+  const params = await searchParams;
+  const parsed = typeof params.seed === "string" ? Number(params.seed) : 42;
+  const options: Options = {
+    module: params.scene === "flight" || params.scene === "telemetry" ? params.scene : "hangar",
+    camera: params.camera === "top" ? "Top" : params.camera === "side" ? "Side" : "Hero",
+    benchmark: params.benchmark === "1",
+    perf: params.perf === "1",
+    seed: Number.isInteger(parsed) ? parsed >>> 0 : 42,
+  };
+  return <Simulator initial={options} />;
 }

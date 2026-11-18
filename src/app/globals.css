@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@import "./styles/facility.css";
+@import "./styles/console.css";
+@import "./styles/flight.css";
+@import "./styles/telemetry.css";
+@import "./styles/responsive.css";

@@ -21,9 +21,14 @@
     "test:e2e": "playwright test",
     "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:setup": "prisma generate && prisma migrate deploy",
+    "benchmark": "node scripts/benchmark.mjs"
   },
   "dependencies": {
+    "@fontsource/barlow-semi-condensed": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@prisma/adapter-better-sqlite3": "7.10.1",
     "@prisma/client": "7.10.1",
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
@@ -56,6 +61,7 @@
   },
   "allowScripts": {
     "prisma@7.10.1": true,
-    "@prisma/engines@7.10.1": true
+    "@prisma/engines@7.10.1": true,
+    "better-sqlite3@12.11.1": true
   }
 }
