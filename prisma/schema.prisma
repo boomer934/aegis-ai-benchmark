@@ -1,0 +1,12 @@
+// Prisma schema for the AEGIS benchmark starter.
+// It intentionally contains no models: the application data model is designed
+// independently by each evaluated agent.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
