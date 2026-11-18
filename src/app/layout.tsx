@@ -1,9 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AEGIS — Benchmark Starter",
-  description: "Starter repository for the AEGIS AI coding benchmark.",
+  title: "AEGIS — Drone Test Facility",
+  description: "Procedural 3D drone hangar, flight-test arena and mission telemetry.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#05070a",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

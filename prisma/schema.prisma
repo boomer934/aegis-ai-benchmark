@@ -1,6 +1,4 @@
-// Prisma schema for the AEGIS benchmark starter.
-// It intentionally contains no models: the application data model is designed
-// independently by each evaluated agent.
+// AEGIS — Drone Test Facility data model.
 
 generator client {
   provider = "prisma-client"
@@ -9,4 +7,27 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+}
+
+/// One completed (successful or failed) flight-test mission reported by the client.
+model MissionRecord {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  callsign     String
+  outcome      String // "success" | "failed"
+  engine       String // "ECO" | "SPORT" | "RACE"
+  paint        String
+  durationMs   Int
+  score        Int
+  checkpoints  Int
+  collisions   Int
+  maxSpeed     Float
+  avgSpeed     Float
+  energyUsed   Float
+  /// JSON-encoded downsampled telemetry trace: [[tSeconds, speed, altitude, energy], ...]
+  telemetry    String
+  clientBuild  String
+
+  @@index([outcome, score])
+  @@index([createdAt])
 }

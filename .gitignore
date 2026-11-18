@@ -34,3 +34,6 @@ npm-debug.log*
 *.log
 .DS_Store
 Thumbs.db
+
+# local scratch scripts
+scripts/.*.tmp.mjs

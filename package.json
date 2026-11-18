@@ -24,6 +24,7 @@
     "db:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "@prisma/adapter-libsql": "7.10.1",
     "@prisma/client": "7.10.1",
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
